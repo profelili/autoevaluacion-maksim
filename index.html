@@ -1,0 +1,3329 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="tool">
+  <title>Matemática 7.º — Capítulo 8: Perímetro y Área (ES / RU)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Palette inspired directly by "Yo Aprender en Séptimo · Capítulo 8" PDF */
+      --background: #f5f6fa;
+      --surface: #ffffff;
+      --surface-muted: #f0eff7;
+      --surface-mint: #e3f5f2;
+      --surface-peach: #fdece3;
+      --surface-gold: #fff9e6;
+
+      --on-surface: #182330;
+      --on-surface-variant: #4d5b6b;
+
+      --outline: #6c439c;
+      --outline-variant: #dce1eb;
+
+      /* Textbook primary violet & mint/aqua */
+      --primary: #633994;
+      --primary-hover: #512c7d;
+      --on-primary: #ffffff;
+      --primary-container: #efe8f9;
+      --on-primary-container: #3e1f63;
+
+      --mint: #2c9e92;
+      --mint-light: #bce5df;
+      --on-mint: #0d3b37;
+
+      --gold: #e6a800;
+      --coral: #e57a44;
+
+      --positive: #197a56;
+      --positive-bg: #e5f6ee;
+      --error: #c02b24;
+      --error-bg: #fdeceb;
+
+      --font-headline: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 0.5rem;
+      --radius-md: 0.875rem;
+      --radius-lg: 1.25rem;
+      --radius-full: 9999px;
+
+      --shadow-card: 0 2px 12px rgb(24 35 48 / 0.05);
+      --shadow-hover: 0 8px 24px rgb(99 57 148 / 0.12);
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: clip;
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea { font-family: inherit; font-size: inherit; }
+
+    :focus-visible {
+      outline: 2.5px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .app-shell {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 1.25rem;
+      display: grid;
+      gap: 1.25rem;
+    }
+    .app-shell * { min-width: 0; }
+
+    /* ============================================================
+       TEXTBOOK HEADER (resembling p. 198 Chapter 8 masthead)
+       ============================================================ */
+    .masthead {
+      background: var(--surface);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .masthead-wave {
+      background: linear-gradient(105deg, var(--primary) 0%, #7848b0 60%, #5c3290 100%);
+      color: var(--on-primary);
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 4px solid var(--mint-light);
+    }
+
+    .chapter-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chapter-badge {
+      background: rgba(255, 255, 255, 0.16);
+      border: 2px solid var(--mint-light);
+      border-radius: var(--radius-md);
+      padding: 0.35rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.05;
+      flex-shrink: 0;
+    }
+    .chapter-badge-cap {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mint-light);
+    }
+    .chapter-badge-num {
+      font-family: var(--font-headline);
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .brand-titles {
+      display: grid;
+      gap: 2px;
+    }
+    .brand-series {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--mint-light);
+    }
+    .brand-main {
+      font-family: var(--font-headline);
+      font-size: clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: var(--radius-full);
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      border: 0;
+      background: transparent;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      min-height: 36px;
+      white-space: nowrap;
+      transition: background-color 150ms var(--ease), color 150ms var(--ease);
+    }
+    .lang-btn[aria-pressed="true"] {
+      background: #ffffff;
+      color: var(--primary);
+    }
+
+    .btn-header-ghost {
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-sm);
+      min-height: 38px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      transition: background-color 150ms var(--ease);
+    }
+    .btn-header-ghost:hover { background: rgba(255, 255, 255, 0.24); }
+
+    .masthead-body {
+      padding: 1.15rem 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-headline);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0 0 0.25rem 0;
+    }
+
+    .hero-desc {
+      margin: 0;
+      color: var(--on-surface-variant);
+      font-size: 0.9375rem;
+      max-width: 68ch;
+    }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .kpi-card {
+      background: var(--surface-muted);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .kpi-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--on-surface-variant);
+      letter-spacing: 0.03em;
+    }
+    .kpi-val {
+      font-family: var(--font-headline);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+    .progress-track {
+      height: 7px;
+      background: #dfe2ee;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-top: 2px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--mint));
+      transition: width 250ms var(--ease);
+    }
+
+    /* ============================================================
+       TOPIC & MODE NAVIGATION BAR
+       ============================================================ */
+    .control-bar {
+      background: var(--surface);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1 1 320px;
+    }
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.03em;
+    }
+
+    .topic-select {
+      width: 100%;
+      min-height: 44px;
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--outline-variant);
+      background: var(--background);
+      color: var(--on-surface);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mode-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .mode-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 44px;
+      padding: 0.5rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--outline-variant);
+      background: var(--background);
+      color: var(--on-surface);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+    }
+    .mode-btn:hover { background: var(--surface-muted); }
+    .mode-btn[aria-selected="true"] {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .btn-fullscreen[aria-pressed="true"] {
+      background: var(--mint);
+      color: #ffffff;
+      border-color: var(--mint);
+    }
+
+    /* Distraction-free focus / fullscreen mode */
+    body.focus-fullscreen {
+      background: var(--surface);
+    }
+    body.focus-fullscreen .app-shell {
+      max-width: 100%;
+      padding: 0.85rem 1.25rem;
+    }
+    body.focus-fullscreen .masthead {
+      display: none;
+    }
+    body.focus-fullscreen .control-bar {
+      position: sticky;
+      top: 0.5rem;
+      z-index: 40;
+      box-shadow: 0 6px 20px rgb(24 35 48 / 0.08);
+    }
+
+    /* ============================================================
+       MAIN WORKSPACE GRID + RIGHT SIDEBAR (BOOK PAGE & ACCESSORIES)
+       ============================================================ */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .main-panel {
+      background: var(--surface);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      gap: 1.35rem;
+    }
+
+    .topic-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--surface-mint);
+    }
+
+    .topic-kicker {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--mint);
+      margin-bottom: 0.2rem;
+    }
+
+    .topic-title {
+      font-family: var(--font-headline);
+      font-size: clamp(1.35rem, 1.15rem + 0.6vw, 1.7rem);
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+
+    .topic-bilingual-sub {
+      color: var(--on-surface-variant);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .topic-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--on-surface-variant);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .status-text.done { color: var(--positive); }
+
+    /* ============================================================
+       TEXTBOOK "PARA RECORDAR" BLOCK (styled directly after PDF!)
+       ============================================================ */
+    .remember-wrap {
+      position: relative;
+      padding-top: 0.85rem;
+    }
+    .remember-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--primary);
+      color: #ffffff;
+      font-family: var(--font-headline);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.32rem 0.9rem;
+      border-radius: var(--radius-full);
+      position: relative;
+      z-index: 2;
+      margin-left: 1rem;
+      margin-bottom: -0.75rem;
+      box-shadow: 0 2px 6px rgb(99 57 148 / 0.25);
+    }
+    .remember-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--mint-light);
+      border: 2px solid #ffffff;
+    }
+    .remember-box {
+      background: var(--surface-muted);
+      border: 1.5px solid #d9d2ec;
+      border-radius: var(--radius-md);
+      padding: 1.35rem 1.25rem 1.1rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .formula-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: #ffffff;
+      color: var(--primary);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid #d9d2ec;
+      width: fit-content;
+    }
+
+    /* ============================================================
+       TEXTBOOK FIGURE GALLERY (original PDF illustrations)
+       ============================================================ */
+    .pdf-figures-panel {
+      background: var(--surface);
+      border: 1.5px solid var(--outline-variant);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.15rem;
+      display: grid;
+      gap: 0.85rem;
+    }
+    .figures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.85rem;
+    }
+    .figure-tile {
+      background: #ffffff;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem;
+      display: grid;
+      gap: 0.5rem;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 150ms var(--ease), box-shadow 150ms var(--ease), border-color 150ms var(--ease);
+    }
+    .figure-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary);
+    }
+    .figure-img-wrap {
+      background: #ffffff;
+      border-radius: 0.35rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+      max-height: 220px;
+    }
+    .figure-img-wrap img {
+      max-width: 100%;
+      max-height: 215px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .figure-caption {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .figure-zoom-hint {
+      font-size: 0.72rem;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       INTERACTIVE SIMULATOR STAGE
+       ============================================================ */
+    .lab-card {
+      background: #fbfbfd;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.25rem;
+      display: grid;
+      gap: 1rem;
+    }
+    .lab-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .lab-title {
+      font-family: var(--font-headline);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+    .lab-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.15rem;
+      align-items: center;
+    }
+    .svg-stage {
+      background: #ffffff;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      min-height: 225px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .svg-stage svg {
+      width: 100%;
+      max-height: 245px;
+      display: block;
+    }
+    .sim-controls { display: grid; gap: 0.85rem; }
+    .slider-block { display: grid; gap: 4px; }
+    .slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .sim-readout {
+      background: var(--surface-mint);
+      color: var(--on-mint);
+      border: 1px solid var(--mint-light);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.9rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      display: grid;
+      gap: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Animated Step-by-Step Mini-Lesson */
+    .anim-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .subtitle-box {
+      background: var(--surface-gold);
+      border: 1.5px solid #f4d678;
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      font-size: 0.92rem;
+    }
+
+    /* ============================================================
+       EXERCISES (with attached PDF figure)
+       ============================================================ */
+    .exercise-list { display: grid; gap: 1rem; }
+    .exercise-card {
+      background: #ffffff;
+      border: 1.5px solid var(--outline-variant);
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.25rem;
+      display: grid;
+      gap: 0.85rem;
+      transition: border-color 180ms var(--ease);
+    }
+    .exercise-card.solved {
+      border-color: var(--positive);
+      background: #fafefc;
+    }
+    .ex-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+      font-weight: 600;
+    }
+    .ex-ref {
+      color: var(--primary);
+      font-family: var(--font-mono);
+    }
+    .ex-body-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: start;
+    }
+    .ex-thumb {
+      width: 190px;
+      max-width: 100%;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .ex-thumb img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+    .ex-prompt { margin: 0; font-weight: 600; font-size: 0.98rem; }
+
+    .ex-input-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 0.6rem;
+    }
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 170px;
+    }
+    .input-wrap label {
+      font-size: 0.78rem;
+      color: var(--on-surface-variant);
+      font-weight: 600;
+    }
+    .text-input {
+      min-height: 44px;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--outline-variant);
+      background: #ffffff;
+      color: var(--on-surface);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .choice-grid { display: grid; gap: 0.45rem; }
+    .choice-btn {
+      text-align: left;
+      min-height: 44px;
+      padding: 0.6rem 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--outline-variant);
+      background: #ffffff;
+      color: var(--on-surface);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 140ms var(--ease), border-color 140ms var(--ease);
+    }
+    .choice-btn:hover { background: var(--surface-muted); }
+    .choice-btn[aria-pressed="true"] {
+      background: var(--primary-container);
+      border-color: var(--primary);
+      color: var(--on-primary-container);
+      font-weight: 700;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      min-height: 44px;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius-sm);
+      border: 0;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+      transition: background-color 140ms var(--ease);
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      min-height: 42px;
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--outline-variant);
+      background: #ffffff;
+      color: var(--on-surface);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      transition: background-color 140ms var(--ease), border-color 140ms var(--ease);
+    }
+    .btn-secondary:hover { background: var(--surface-muted); border-color: var(--primary); }
+
+    .btn-mint {
+      min-height: 42px;
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--mint-light);
+      background: var(--surface-mint);
+      color: var(--on-mint);
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+    .btn-mint:hover { background: #d0eee9; }
+
+    .feedback-msg {
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-sm);
+      display: none;
+    }
+    .feedback-msg.ok { display: block; background: var(--positive-bg); color: var(--positive); }
+    .feedback-msg.err { display: block; background: var(--error-bg); color: var(--error); }
+
+    .lesson-footer-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--outline-variant);
+    }
+
+    /* ============================================================
+       SIDEBAR: STUDENT ACCESSORIES + TUTOR + BADGES
+       ============================================================ */
+    .sidebar { display: grid; gap: 1.15rem; }
+
+    .side-card {
+      background: var(--surface);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .side-title {
+      font-family: var(--font-headline);
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    /* Accessory Tabs inside Sidebar */
+    .tool-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+      background: var(--surface-muted);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+    }
+    .tool-tab {
+      border: 0;
+      background: transparent;
+      color: var(--on-surface-variant);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.45rem 0.35rem;
+      border-radius: 0.35rem;
+      cursor: pointer;
+      min-height: 36px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tool-tab[aria-selected="true"] {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 1px 4px rgb(0 0 0 / 0.08);
+    }
+
+    /* Quick Calculator */
+    .calc-display {
+      background: #182330;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-sm);
+      text-align: right;
+      min-height: 48px;
+      overflow-x: auto;
+      font-variant-numeric: tabular-nums;
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 5px;
+    }
+    .calc-key {
+      min-height: 40px;
+      border-radius: 0.4rem;
+      border: 1px solid var(--outline-variant);
+      background: #ffffff;
+      color: var(--on-surface);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .calc-key:hover { background: var(--surface-muted); }
+    .calc-key.op { background: var(--primary-container); color: var(--on-primary-container); border-color: #d6c8ed; }
+    .calc-key.eq { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+
+    /* Unit Converter */
+    .conv-box { display: grid; gap: 0.55rem; }
+    .conv-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem;
+    }
+    .conv-result {
+      background: var(--surface-mint);
+      color: var(--on-mint);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    /* Interactive 1cm² Grid Scratchpad ("Mi Carpeta Cuadriculada") */
+    .scratch-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 1px;
+      background: #c5ccd9;
+      border: 1.5px solid #99a3b7;
+      border-radius: 0.35rem;
+      overflow: hidden;
+      user-select: none;
+    }
+    .scratch-cell {
+      aspect-ratio: 1;
+      background: #ffffff;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      transition: background-color 80ms linear;
+    }
+    .scratch-cell.active {
+      background: #7ad1c6;
+    }
+    .scratch-stats {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--surface-muted);
+      padding: 0.45rem 0.7rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .tutor-bubble {
+      background: var(--surface-gold);
+      border: 1.5px solid #f4d678;
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      font-size: 0.9rem;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+    .badge-item {
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem;
+      font-size: 0.78rem;
+      text-align: center;
+      background: var(--background);
+      color: var(--on-surface-variant);
+    }
+    .badge-item.unlocked {
+      background: var(--surface-mint);
+      border-color: var(--mint);
+      color: var(--on-mint);
+      font-weight: 700;
+    }
+
+    /* Tables, Flashcards, Quiz */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--outline-variant);
+    }
+    .data-table th {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-size: 0.78rem;
+      text-align: left;
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1.5px solid #d6c8ed;
+    }
+    .data-table td {
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid var(--outline-variant);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: 0.85rem;
+    }
+    .flashcard {
+      background: #ffffff;
+      border: 1.5px solid var(--outline-variant);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      cursor: pointer;
+      display: grid;
+      gap: 0.45rem;
+      transition: box-shadow 160ms var(--ease), transform 160ms var(--ease);
+    }
+    .flashcard:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+
+    .quiz-summary {
+      background: var(--primary-container);
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      display: grid;
+      gap: 0.65rem;
+    }
+    .score-big {
+      font-family: var(--font-headline);
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    /* ============================================================
+       MODAL LIGHTBOX / PDF BOOK VIEWER
+       ============================================================ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgb(16 24 38 / 0.72);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 980px;
+      width: 100%;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgb(0 0 0 / 0.35);
+    }
+    .modal-head {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .modal-title {
+      font-family: var(--font-headline);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .modal-body {
+      padding: 1rem 1.25rem;
+      overflow-y: auto;
+      display: grid;
+      gap: 0.9rem;
+      justify-items: center;
+      background: var(--background);
+    }
+    .modal-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--outline-variant);
+      background: #ffffff;
+      box-shadow: var(--shadow-card);
+    }
+    .page-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+    }
+    .page-num-btn {
+      min-width: 40px;
+      height: 36px;
+      border-radius: 0.4rem;
+      border: 1px solid var(--outline-variant);
+      background: #ffffff;
+      color: var(--on-surface);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .page-num-btn[aria-current="page"] {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* SVG Geometry Classes */
+    .geo-grid { stroke: #d7dce6; stroke-width: 1; }
+    .geo-shape { fill: #cbeee9; stroke: #2c9e92; stroke-width: 2.5; }
+    .geo-shape-purple { fill: #e9dff7; stroke: #633994; stroke-width: 2.5; }
+    .geo-shape-peach { fill: #fde3d4; stroke: #e57a44; stroke-width: 2.5; }
+    .geo-dashed { stroke: #633994; stroke-width: 2; stroke-dasharray: 5 4; fill: none; }
+    .geo-label { fill: #182330; font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1020px) {
+      .masthead-body { grid-template-columns: 1fr; }
+      .workspace-grid { grid-template-columns: 1fr; }
+      .lab-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .app-shell { padding: 0.65rem; gap: 0.85rem; }
+      .main-panel { padding: 1rem; }
+      .kpi-strip { grid-template-columns: 1fr; }
+      .ex-body-split { grid-template-columns: 1fr; }
+      .ex-thumb { width: 100%; max-width: 260px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- TEXTBOOK HEADER -->
+    <header class="masthead">
+      <div class="masthead-wave">
+        <div class="chapter-brand">
+          <div class="chapter-badge" aria-hidden="true">
+            <span class="chapter-badge-cap">CAPÍTULO</span>
+            <span class="chapter-badge-num">8</span>
+          </div>
+          <div class="brand-titles">
+            <span class="brand-series" id="ui-series-name">YO ❤ APRENDER EN SÉPTIMO · MATEMÁTICA (ES / RU)</span>
+            <h1 class="brand-main" id="ui-main-title">Perímetro y área de figuras</h1>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn-header-ghost" onclick="openBookModal()">
+            <i data-lucide="book-open-check" width="16" height="16"></i>
+            <span id="ui-open-book-btn">Libro Original (pp. 198–211)</span>
+          </button>
+          <div class="lang-switch" role="group" aria-label="Idioma">
+            <button type="button" class="lang-btn" id="btn-lang-es" aria-pressed="true" onclick="setLanguage('es')">ES Español</button>
+            <button type="button" class="lang-btn" id="btn-lang-ru" aria-pressed="false" onclick="setLanguage('ru')">RU Русский</button>
+          </div>
+          <button type="button" class="btn-header-ghost" id="btn-reset-all" onclick="handleResetProgress(this)">
+            <i data-lucide="rotate-ccw" width="15" height="15"></i>
+            <span id="ui-reset-label">Reiniciar</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="masthead-body">
+        <div>
+          <p class="hero-subtitle" id="ui-main-subtitle">Aprendemos y resolvemos / Учимся и решаем</p>
+          <p class="hero-desc" id="ui-main-desc">
+            Plataforma bilingüe interactiva fiel al Capítulo 8 del Ministerio de Educación GCABA: explorá las figuras reales del libro, resolvé ejercicios con simuladores dinámicos y utilizá la carpeta cuadriculada y calculadora integradas.
+          </p>
+        </div>
+        <div class="kpi-strip">
+          <div class="kpi-card">
+            <span class="kpi-label" id="ui-kpi-prog-lbl">Progreso</span>
+            <span class="kpi-val" id="kpi-progress">0%</span>
+            <div class="progress-track"><div class="progress-fill" id="progress-bar-fill" style="width: 0%"></div></div>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label" id="ui-kpi-ex-lbl">Ejercicios</span>
+            <span class="kpi-val" id="kpi-solved">0/18</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label" id="ui-kpi-eval-lbl">Autoevaluación</span>
+            <span class="kpi-val" id="kpi-grade">—/10</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOPIC DROPDOWN & VIEW MODE NAVIGATION -->
+    <nav class="control-bar" aria-label="Navegación de capítulos y modos">
+      <div class="field-group">
+        <label class="field-label" for="topic-dropdown" id="ui-select-topic-lbl">Temas del Capítulo 8 (pp. 198–211)</label>
+        <select id="topic-dropdown" class="topic-select" onchange="selectTopic(this.value)"></select>
+      </div>
+      <div class="mode-pills" role="tablist">
+        <button type="button" class="mode-btn" role="tab" id="tab-lesson" aria-selected="true" onclick="setViewMode('lesson')">
+          <i data-lucide="book-open" width="16" height="16"></i>
+          <span id="ui-tab-lesson">Lección y Figuras</span>
+        </button>
+        <button type="button" class="mode-btn" role="tab" id="tab-resources" aria-selected="false" onclick="setViewMode('resources')">
+          <i data-lucide="layers" width="16" height="16"></i>
+          <span id="ui-tab-resources">Mapa, Fichas y Desafío</span>
+        </button>
+        <button type="button" class="mode-btn" role="tab" id="tab-quiz" aria-selected="false" onclick="setViewMode('quiz')">
+          <i data-lucide="award" width="16" height="16"></i>
+          <span id="ui-tab-quiz">Autoevaluación /10</span>
+        </button>
+        <button type="button" class="mode-btn" role="tab" id="tab-teacher" aria-selected="false" onclick="setViewMode('teacher')">
+          <i data-lucide="graduation-cap" width="16" height="16"></i>
+          <span id="ui-tab-teacher">Panel Docente</span>
+        </button>
+        <button type="button" class="mode-btn btn-fullscreen" id="btn-fullscreen" aria-pressed="false" onclick="toggleFullscreen()">
+          <i data-lucide="maximize-2" width="16" height="16" id="icon-fullscreen"></i>
+          <span id="ui-fullscreen-btn">Pantalla completa</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="workspace-grid">
+      <main class="main-panel" id="main-content"></main>
+
+      <!-- SIDEBAR: STUDENT ACCESSORIES + TUTOR + BADGES -->
+      <aside class="sidebar">
+        <!-- STUDENT ACCESORIES TOOLBOX -->
+        <section class="side-card" aria-labelledby="toolbox-heading">
+          <h2 class="side-title" id="toolbox-heading">
+            <i data-lucide="wrench" width="18" height="18"></i>
+            <span id="ui-toolbox-title">Accesorios del Alumno</span>
+          </h2>
+          <div class="tool-tabs" role="tablist">
+            <button type="button" class="tool-tab" id="tool-tab-calc" aria-selected="true" onclick="setToolTab('calc')">Calculadora</button>
+            <button type="button" class="tool-tab" id="tool-tab-conv" aria-selected="false" onclick="setToolTab('conv')">Conversor</button>
+            <button type="button" class="tool-tab" id="tool-tab-grid" aria-selected="false" onclick="setToolTab('grid')">Cuadrícula</button>
+          </div>
+          <div id="toolbox-body"></div>
+        </section>
+
+        <!-- MATH TUTOR -->
+        <section class="side-card" aria-labelledby="tutor-heading">
+          <h2 class="side-title" id="tutor-heading">
+            <i data-lucide="sparkles" width="18" height="18"></i>
+            <span id="ui-tutor-title">Asistente Matemático</span>
+          </h2>
+          <div class="tutor-bubble" id="tutor-box">
+            <div id="tutor-text"></div>
+            <div style="display:flex; flex-wrap:wrap; gap:0.45rem;">
+              <button type="button" class="btn-secondary" onclick="nextTutorHint()">
+                <i data-lucide="lightbulb" width="15" height="15"></i>
+                <span id="ui-hint-btn">Pedir pista</span>
+              </button>
+              <button type="button" class="btn-secondary" onclick="showTutorConcept()">
+                <i data-lucide="bookmark" width="15" height="15"></i>
+                <span id="ui-concept-btn">Ver teoría</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACHIEVEMENT BADGES -->
+        <section class="side-card" aria-labelledby="badges-heading">
+          <h2 class="side-title" id="badges-heading">
+            <i data-lucide="trophy" width="18" height="18"></i>
+            <span id="ui-badges-title">Logros e Insignias</span>
+          </h2>
+          <div class="badge-grid" id="badges-container"></div>
+        </section>
+
+        <!-- ORIGINAL PDF LINK -->
+        <section class="side-card" aria-labelledby="source-heading">
+          <h2 class="side-title" id="source-heading">
+            <i data-lucide="file-text" width="18" height="18"></i>
+            <span id="ui-source-title">Libro Original (PDF)</span>
+          </h2>
+          <p style="margin:0; font-size:0.84rem; color:var(--on-surface-variant);" id="ui-source-credit">
+            «Yo Aprender en Séptimo — Matemática, Capítulo 8» (pp. 198–211), Ministerio de Educación GCABA.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:0.45rem;">
+            <button type="button" class="btn-mint" style="flex:1;" onclick="openBookModal()">
+              <i data-lucide="eye" width="15" height="15"></i>
+              <span id="ui-view-pages-btn">Ver páginas</span>
+            </button>
+            <a class="btn-secondary" href="/assets/aistudio/Per_metro_y__rea_8b782c39.pdf" download="Capitulo_8_Perimetro_y_Area.pdf" style="text-decoration:none;">
+              <i data-lucide="download" width="15" height="15"></i>
+              PDF
+            </a>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <!-- MODAL: BOOK PAGE VIEWER / IMAGE LIGHTBOX -->
+  <div class="modal-backdrop hidden" id="book-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="if(event.target===this) closeModal()">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h2 class="modal-title" id="modal-title">Libro Original — Capítulo 8</h2>
+        <button type="button" class="btn-header-ghost" onclick="closeModal()" aria-label="Cerrar">
+          <i data-lucide="x" width="18" height="18"></i>
+          <span id="ui-close-modal">Cerrar</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <api-shim></api-shim>
+  <script>
+    /* ============================================================
+       BILINGUAL UI STRINGS (ES / RU)
+       ============================================================ */
+    const UI = {
+      es: {
+        seriesName: `YO ❤ APRENDER EN SÉPTIMO · MATEMÁTICA (ES / RU)`,
+        mainTitle: `Perímetro y área de figuras`,
+        openBookBtn: `Libro Original (pp. 198–211)`,
+        resetLabel: `Reiniciar`,
+        resetConfirm: `¿Confirmar?`,
+        mainSubtitle: `Aprendemos y resolvemos / Учимся и решаем`,
+        mainDesc: `Plataforma bilingüe interactiva fiel al Capítulo 8 del Ministerio de Educación GCABA: explorá las figuras reales del libro, resolvé ejercicios con simuladores dinámicos y utilizá la carpeta cuadriculada y calculadora integradas.`,
+        kpiProg: `Progreso`,
+        kpiEx: `Ejercicios`,
+        kpiEval: `Autoevaluación`,
+        selectTopic: `Temas del Capítulo 8 (pp. 198–211)`,
+        tabLesson: `Lección y Figuras`,
+        tabResources: `Mapa, Fichas y Desafío`,
+        tabQuiz: `Autoevaluación /10`,
+        tabTeacher: `Panel Docente`,
+        fullscreenEnter: `Pantalla completa`,
+        fullscreenExit: `Salir de pantalla completa`,
+        toolboxTitle: `Accesorios del Alumno`,
+        toolCalc: `Calculadora`,
+        toolConv: `Conversor`,
+        toolGrid: `Cuadrícula`,
+        tutorTitle: `Asistente Matemático`,
+        hintBtn: `Pedir pista`,
+        conceptBtn: `Ver teoría`,
+        badgesTitle: `Logros e Insignias`,
+        sourceTitle: `Libro Original (PDF)`,
+        sourceCredit: `«Yo Aprender en Séptimo — Matemática, Capítulo 8» (pp. 198–211), Ministerio de Educación GCABA.`,
+        viewPagesBtn: `Ver páginas`,
+        closeModal: `Cerrar`,
+        rememberHeading: `PARA RECORDAR`,
+        figuresHeading: `Ilustraciones y Figuras Originales del Libro`,
+        zoomHint: `Ampliar`,
+        openTopicPage: `Ver página del libro`,
+        simHeading: `Simulador Geométrico Interactivo`,
+        animHeading: `Explicación Paso a Paso (ES / RU)`,
+        exHeading: `Ejercicios del Capítulo 8`,
+        checkBtn: `Comprobar`,
+        answerPlaceholder: `Tu respuesta`,
+        completedLabel: `Tema completado`,
+        inProgressLabel: `En progreso`,
+        nextStepBtn: `Siguiente paso`,
+        prevStepBtn: `Paso anterior`,
+        prevTopicBtn: `Tema anterior`,
+        nextTopicBtn: `Siguiente tema`,
+        stepLabel: `Paso`,
+        correctMsg: `¡Excelente! Tu razonamiento coincide con el ejercicio del libro.`,
+        wrongMsg: `Revisá tus cálculos o pedí una pista al Asistente Matemático.`,
+        quizTitle: `Autoevaluación Final — Capítulo 8 (Escala 1 a 10)`,
+        quizIntro: `Respondé las 10 consignas basadas en los ejercicios de las páginas 198–211. La nota final se calcula sobre 10 puntos.`,
+        submitQuizBtn: `Finalizar y Calificar`,
+        retryQuizBtn: `Volver a intentar`,
+        teacherTitle: `Panel Docente y Revisión del PDF`,
+        teacherIntro: `Supervisá el índice extraído del PDF, verificá las respuestas correctas de cada actividad y exportá el informe de progreso del estudiante.`,
+        exportCsvBtn: `Descargar informe CSV`
+      },
+      ru: {
+        seriesName: `YO ❤ APRENDER EN SÉPTIMO · МАТЕМАТИКА (ES / RU)`,
+        mainTitle: `Периметр и площадь фигур`,
+        openBookBtn: `Учебник (стр. 198–211)`,
+        resetLabel: `Сбросить`,
+        resetConfirm: `Подтвердить?`,
+        mainSubtitle: `Aprendemos y resolvemos / Учимся и решаем`,
+        mainDesc: `Двуязычная интерактивная платформа по 8-й главе учебника Буэнос-Айреса: изучайте подлинные рисунки из книги, решайте задачи в симуляторах и пользуйтесь встроенным калькулятором, конвертером и тетрадью в клетку.`,
+        kpiProg: `Прогресс`,
+        kpiEx: `Задания`,
+        kpiEval: `Самопроверка`,
+        selectTopic: `Темы главы 8 (стр. 198–211)`,
+        tabLesson: `Урок и Рисунки`,
+        tabResources: `Карта, Карточки и Игра`,
+        tabQuiz: `Тест (оценка /10)`,
+        tabTeacher: `Панель учителя`,
+        fullscreenEnter: `На весь экран`,
+        fullscreenExit: `Выйти из полноэкранного`,
+        toolboxTitle: `Инструменты ученика`,
+        toolCalc: `Калькулятор`,
+        toolConv: `Конвертер`,
+        toolGrid: `Тетрадь`,
+        tutorTitle: `Математический ассистент`,
+        hintBtn: `Подсказка`,
+        conceptBtn: `Теория`,
+        badgesTitle: `Достижения и значки`,
+        sourceTitle: `Оригинал учебника (PDF)`,
+        sourceCredit: `«Yo Aprender en Séptimo — Matemática, Capítulo 8» (стр. 198–211), Министерство образования Буэнос-Айреса.`,
+        viewPagesBtn: `Открыть страницы`,
+        closeModal: `Закрыть`,
+        rememberHeading: `ДЛЯ ЗАПОМИНАНИЯ`,
+        figuresHeading: `Оригинальные рисунки и схемы из учебника`,
+        zoomHint: `Увеличить`,
+        openTopicPage: `Открыть страницу книги`,
+        simHeading: `Интерактивный геометрический симулятор`,
+        animHeading: `Пошаговое объяснение (ES / RU)`,
+        exHeading: `Задания из Главы 8`,
+        checkBtn: `Проверить`,
+        answerPlaceholder: `Ваш ответ`,
+        completedLabel: `Тема пройдена`,
+        inProgressLabel: `В процессе`,
+        nextStepBtn: `Следующий шаг`,
+        prevStepBtn: `Предыдущий шаг`,
+        prevTopicBtn: `Предыдущая тема`,
+        nextTopicBtn: `Следующая тема`,
+        stepLabel: `Шаг`,
+        correctMsg: `Отлично! Решение совпадает с заданием из учебника.`,
+        wrongMsg: `Проверь вычисления или попроси подсказку у ассистента.`,
+        quizTitle: `Итоговая самопроверка — Глава 8 (Шкала от 1 до 10)`,
+        quizIntro: `Ответь на 10 заданий по страницам 198–211. Итоговая оценка рассчитывается по 10-балльной шкале.`,
+        submitQuizBtn: `Завершить и оценить`,
+        retryQuizBtn: `Попробовать снова`,
+        teacherTitle: `Панель учителя и проверка PDF`,
+        teacherIntro: `Просматривайте оглавление из PDF, проверяйте эталонные ответы ко всем заданиям и скачивайте отчёт о прогрессе ученика.`,
+        exportCsvBtn: `Скачать отчёт CSV`
+      }
+    };
+
+    /* ============================================================
+       9 TOPICS GROUNDED IN THE ATTACHED PDF (pp. 198–211)
+       ============================================================ */
+    const TOPICS = [
+      {
+        id: `t1`,
+        pages: `pp. 198–199`,
+        bookPage: 1,
+        titleEs: `1. Pentaminós, contorno (perímetro) y área`,
+        titleRu: `1. Пентамино, контур (периметр) и площадь`,
+        rememberEs: `Los pentaminós son 12 fichas formadas por 5 cuadraditos iguales unidos por al menos un lado (Solomon Golomb, 1953). La medida del contorno de una figura geométrica se denomina perímetro. En los polígonos, se calcula con la suma de las medidas de sus lados.`,
+        rememberRu: `Пентамино — это 12 фигур, состоящих из 5 равных квадратиков, соединённых хотя бы одной стороной (Соломон Голомб, 1953). Длина контура геометрической фигуры называется периметром. У многоугольников он вычисляется как сумма длин всех сторон.`,
+        formula: `P = suma de lados  |  12 pentaminós = 12 × 5 = 60 cuadraditos`,
+        simType: `pentamino`,
+        figures: [
+          { src: `/assets/pdf-figures/p198_pentaminos.png`, capEs: `Los 12 pentaminós (p. 198)`, capRu: `12 фигур пентамино (стр. 198)` },
+          { src: `/assets/pdf-figures/p199_cuadricula.png`, capEs: `Comparar perímetros en cuadrícula (p. 199)`, capRu: `Сравнение периметров по сетке (стр. 199)` }
+        ],
+        animSteps: [
+          { es: `Paso 1: Cada pentaminó tiene 5 cuadraditos. Con las 12 fichas juntas el área total siempre es 12 × 5 = 60 cuadraditos.`, ru: `Шаг 1: В каждой фигуре пентамино 5 квадратиков. Все 12 фигур вместе дают площадь 12 × 5 = 60 квадратиков.` },
+          { es: `Paso 2: Con esas 12 fichas se arman rectángulos de 10×6, 12×5 o 20×3. Todos tienen área 60, pero distinto contorno (perímetro).`, ru: `Шаг 2: Из них можно сложить прямоугольники 10×6, 12×5 или 20×3. Площадь у всех 60, но периметры разные.` },
+          { es: `Paso 3: En el ejercicio 2 (p. 199), podés contar cada segmento del borde sobre la cuadrícula para comparar los perímetros.`, ru: `Шаг 3: В задании 2 (стр. 199) можно посчитать отрезки контура по клеткам, чтобы сравнить периметры.` }
+        ],
+        hintsEs: [
+          `Contá cuántos cuadraditos tiene cada ficha (5) y multiplicá por las 12 fichas.`,
+          `El rectángulo de 20×3 tiene dos lados de 20 y dos lados de 3: 20 + 3 + 20 + 3.`
+        ],
+        hintsRu: [
+          `Посчитай квадратики в одной фигуре (5) и умножь на 12 фигур.`,
+          `У прямоугольника 20×3 две стороны по 20 и две по 3: 20 + 3 + 20 + 3.`
+        ],
+        exercises: [
+          {
+            id: `ex1_1`, ref: `p. 198 · Act. 1–2`, type: `number`,
+            img: `/assets/pdf-figures/p198_pentaminos.png`,
+            promptEs: `Considerando cada cuadradito como 1 unidad de área, ¿cuál es el área total de un rectángulo formado por los 12 pentaminós?`,
+            promptRu: `Если принять один квадратик за 1 единицу площади, чему равна общая площадь прямоугольника из всех 12 пентамино?`,
+            answer: 60, unit: `u²`
+          },
+          {
+            id: `ex1_2`, ref: `p. 199 · Act. 1b`, type: `number`,
+            img: `/assets/pdf-figures/p199_cuadricula.png`,
+            promptEs: `Si construís el rectángulo de 20 × 3 cuadritos con los 12 pentaminós, ¿cuál es su perímetro (en unidades de lado)?`,
+            promptRu: `Если сложить прямоугольник 20 × 3 квадратика из всех 12 пентамино, чему равен его периметр (в сторонах квадратика)?`,
+            answer: 46, unit: `u`
+          }
+        ]
+      },
+      {
+        id: `t2`,
+        pages: `p. 200`,
+        bookPage: 3,
+        titleEs: `2. Medir áreas usando distintas unidades`,
+        titleRu: `2. Измерение площади разными мерками`,
+        rememberEs: `El área es el número de veces que la unidad elegida cabe en la superficie a medir. Si cambiamos la unidad (A, B, C o D), cambia el valor numérico del área. Para comparar superficies, es necesario usar la misma unidad de medida.`,
+        rememberRu: `Площадь — это число, показывающее, сколько раз выбранная мерка помещается в фигуре. Если изменить мерку (A, B, C или D), числовое значение площади изменится. Для сравнения площадей нужно использовать одну и ту же мерку.`,
+        formula: `Unidad A = 3 u²  |  Unidad B = 3 u²  |  Unidad C = 0,5 u²  |  Unidad D = 1 u²`,
+        simType: `units`,
+        figures: [
+          { src: `/assets/pdf-figures/p200_unidades.png`, capEs: `Unidades A, B, C, D y Figuras 1 y 2 (p. 200)`, capRu: `Мерки A, B, C, D и Фигуры 1 и 2 (стр. 200)` }
+        ],
+        animSteps: [
+          { es: `Paso 1: Observá la cuadrícula de la p. 200: A (rectángulo 3×1) y B (L de 3 cuadraditos) cubren 3 cuadraditos. C es medio cuadradito (0,5) y D es un triángulo de base 2 y altura 1 (área = 1 cuadradito).`, ru: `Шаг 1: Посмотри на сетку стр. 200: A (3×1) и B (уголок из 3 клеток) занимают по 3 квадратика. C — полклетки (0,5), а D — треугольник с основанием 2 и высотой 1 (площадь = 1 клетка).` },
+          { es: `Paso 2: Por eso, 1 unidad D = 2 unidades C. Y tanto la Figura 1 (2×3) como la Figura 2 (4×1,5) ocupan exactamente 6 cuadraditos.`, ru: `Шаг 2: Значит, 1 мерка D = 2 меркам C. И Фигура 1 (2×3), и Фигура 2 (4×1,5) занимают ровно 6 квадратиков.` }
+        ],
+        hintsEs: [
+          `Observá cuántos triángulos C (medio cuadradito) entran dentro del triángulo D (1 cuadradito completo).`,
+          `Si 1 cuadrado de cuadrícula vale 1 unidad D, un cuadrado de 4 unidades D ocupa 4 cuadraditos (lado = 2).`
+        ],
+        hintsRu: [
+          `Посмотри, сколько треугольников C (полклетки) помещается в треугольник D (1 целая клетка).`,
+          `В задании 2a (стр. 200): 4 единицы D равны 4 целым клеткам (квадрат 2×2).`
+        ],
+        exercises: [
+          {
+            id: `ex2_1`, ref: `p. 200 · Act. 1c`, type: `choice`,
+            img: `/assets/pdf-figures/p200_unidades.png`,
+            promptEs: `Observando las figuras de la p. 200, ¿qué relación hay entre las áreas de las unidades C y D?`,
+            promptRu: `Посмотри на рисунок стр. 200: как связаны площади мерок C и D?`,
+            optionsEs: [`D es el doble que C (1 D = 2 C)`, `C es el doble que D`, `Tienen la misma área`],
+            optionsRu: [`D вдвое больше C (1 D = 2 C)`, `C вдвое больше D`, `Их площади равны`],
+            answerIndex: 0
+          },
+          {
+            id: `ex2_2`, ref: `p. 200 · Act. 1a`, type: `number`,
+            img: `/assets/pdf-figures/p200_unidades.png`,
+            promptEs: `¿Cuánto mide la superficie de la Figura 1 (2×3 cuadraditos) tomada en unidades A (rectángulo de 3 cuadraditos)?`,
+            promptRu: `Чему равна площадь Фигуры 1 (2×3 клетки), измеренная в мерках A (прямоугольник из 3 клеток)?`,
+            answer: 2, unit: `A`
+          }
+        ]
+      },
+      {
+        id: `t3`,
+        pages: `p. 201`,
+        bookPage: 4,
+        titleEs: `3. Medir superficies usando el metro cuadrado`,
+        titleRu: `3. Квадратный метр и единицы площади`,
+        rememberEs: `En el Sistema Internacional (SI), la unidad estándar para medir superficies es el metro cuadrado (m²), que es el área de un cuadrado de 1 m de lado. Cada salto entre unidades contiguas de área equivale a multiplicar o dividir por 100.`,
+        rememberRu: `В системе СИ стандартной единицей площади является квадратный метр (м²) — площадь квадрата со стороной 1 м. Переход между соседними единицами площади соответствует умножению или делению на 100.`,
+        formula: `1 km² = 1.000.000 m²  |  1 m² = 100 dm² = 10.000 cm²`,
+        simType: `units_si`,
+        figures: [
+          { src: `/assets/pdf-figures/p201_tabla_si.png`, capEs: `Tabla oficial de múltiplos y submúltiplos del m² (p. 201)`, capRu: `Таблица единиц площади СИ (стр. 201)` }
+        ],
+        animSteps: [
+          { es: `Paso 1: Un cuadrado de 1 m de lado tiene 100 cm de ancho y 100 cm de alto.`, ru: `Шаг 1: Квадрат со стороной 1 м имеет ширину 100 см и высоту 100 см.` },
+          { es: `Paso 2: Al multiplicar 100 cm × 100 cm obtenemos 10.000 cm². ¡Por eso las unidades cuadradas cambian de 100 en 100!`, ru: `Шаг 2: Умножив 100 см × 100 см, получаем 10 000 см². Поэтому квадратные единицы меняются в 100 раз на каждом шаге!` }
+        ],
+        hintsEs: [
+          `1 metro = 100 cm. Calculá 100 × 100 para pasar a cm².`,
+          `Un cuadrado de 100 m de lado tiene 100 × 100 = 10.000 m². Dividí por 1.000.000 para pasar a km².`
+        ],
+        hintsRu: [
+          `1 метр = 100 см. Вычисли 100 × 100 для перевода в см².`,
+          `Квадрат со стороной 100 м имеет площадь 10 000 м². Раздели на 1 000 000 для перевода в км².`
+        ],
+        exercises: [
+          {
+            id: `ex3_1`, ref: `p. 201 · Act. 3a`, type: `number`,
+            img: `/assets/pdf-figures/p201_tabla_si.png`,
+            promptEs: `¿Cuánto mide la superficie de un cuadrado de 1 m de lado expresada en centímetros cuadrados (cm²)?`,
+            promptRu: `Чему равна площадь квадрата со стороной 1 м в квадратных сантиметрах (см²)?`,
+            answer: 10000, unit: `cm²`
+          },
+          {
+            id: `ex3_2`, ref: `p. 201 · Act. 3c`, type: `number`,
+            img: `/assets/pdf-figures/p201_tabla_si.png`,
+            promptEs: `¿Cuánto mide la superficie de un cuadrado de 100 m de lado expresada en kilómetros cuadrados (km²)? (Ej: 0.01)`,
+            promptRu: `Чему равна площадь квадрата со стороной 100 м в квадратных километрах (км²)? (Например: 0.01)`,
+            answer: 0.01, unit: `km²`
+          }
+        ]
+      },
+      {
+        id: `t4`,
+        pages: `pp. 202–203`,
+        bookPage: 5,
+        titleEs: `4. Problemas de área, hectáreas y estimación`,
+        titleRu: `4. Задачи на площадь, гектары и оценка изменений`,
+        rememberEs: `Una hectárea (1 ha) es el área de un cuadrado de 100 m de lado y equivale a 10.000 m². Además, cuando multiplicamos los lados de una figura por un factor k, su perímetro se multiplica por k, pero su área se multiplica por k².`,
+        rememberRu: `Один гектар (1 га) — это площадь квадрата со стороной 100 м, равная 10 000 м². Если увеличить все стороны фигуры в k раз, её периметр увеличится в k раз, а площадь — в k² раз.`,
+        formula: `1 ha = 10.000 m²  |  Patio 4m × 3m = 400 cm × 300 cm = 120.000 cm²`,
+        simType: `scaling`,
+        figures: [
+          { src: `/assets/pdf-figures/p202_patio.png`, capEs: `Plano del patio de José: 4 m × 3 m (p. 202)`, capRu: `План двора Хосе: 4 м × 3 м (стр. 202)` },
+          { src: `/assets/pdf-figures/p202_baldosas.png`, capEs: `Baldosas disponibles para el patio (p. 202)`, capRu: `Варианты плитки для двора (стр. 202)` },
+          { src: `/assets/pdf-figures/p202_hectareas.png`, capEs: `Terrenos de 200×200 m y 100×300 m (p. 202)`, capRu: `Участки 200×200 м и 100×300 м (стр. 202)` },
+          { src: `/assets/pdf-figures/p203_cuadrado.png`, capEs: `Cuadrado en cuadrícula (p. 203)`, capRu: `Квадрат на сетке (стр. 203)` },
+          { src: `/assets/pdf-figures/p203_triangulo.png`, capEs: `Triángulo rectángulo ABC de 40 cm² (p. 203)`, capRu: `Прямоугольный треугольник ABC 40 см² (стр. 203)` },
+          { src: `/assets/pdf-figures/p203_trapecio.png`, capEs: `Trapecio rectángulo en cuadrícula (p. 203)`, capRu: `Прямоугольная трапеция на сетке (стр. 203)` }
+        ],
+        animSteps: [
+          { es: `Paso 1: El patio de José mide 3 m × 4 m = 300 cm × 400 cm = 120.000 cm². Con baldosas verdes de 20×20 cm entran 15 × 20 = 300 baldosas exactas.`, ru: `Шаг 1: Двор Хосе — 300 см × 400 см = 120 000 см². Зелёная плитка 20×20 см ложится ровно: 15 × 20 = 300 штук.` },
+          { es: `Paso 2: Si triplicamos el lado de un cuadrado, entran 3 × 3 = 9 cuadrados originales. ¡El área no se triplica, se nonuplica!`, ru: `Шаг 2: Если утроить сторону квадрата, внутри поместится 3 × 3 = 9 исходных квадратов. Площадь увеличится в 9 раз!` }
+        ],
+        hintsEs: [
+          `En la Act. 2 (p. 202): 100 m × 300 m = 30.000 m². Como 1 ha = 10.000 m², dividí por 10.000.`,
+          `En la Act. 2b (p. 203): si duplicás la base (×2) y duplicás la altura (×2), el área se multiplica por 2 × 2.`
+        ],
+        hintsRu: [
+          `В №2 (стр. 202): 100 м × 300 м = 30 000 м². Раздели на 10 000 м², чтобы получить гектары.`,
+          `В №2b (стр. 203): если удвоить основание (×2) и высоту (×2), площадь умножится на 2 × 2.`
+        ],
+        exercises: [
+          {
+            id: `ex4_1`, ref: `p. 202 · Act. 2`, type: `number`,
+            img: `/assets/pdf-figures/p202_hectareas.png`,
+            promptEs: `Calculá en hectáreas el área del terreno rectangular de 100 m de ancho por 300 m de largo.`,
+            promptRu: `Вычисли в гектарах площадь прямоугольного участка шириной 100 м и длиной 300 м.`,
+            answer: 3, unit: `ha`
+          },
+          {
+            id: `ex4_2`, ref: `p. 203 · Act. 2b`, type: `choice`,
+            img: `/assets/pdf-figures/p203_cuadrado.png`,
+            promptEs: `En un rectángulo de 5 cm de base y 7 cm de altura, ¿qué sucede con el área si se duplican la base y la altura?`,
+            promptRu: `В прямоугольнике с основанием 5 см и высотой 7 см, что произойдёт с площадью, если удвоить и основание, и высоту?`,
+            optionsEs: [`Se duplica (×2)`, `Se cuadruplica (×4)`, `Se triplica (×3)`],
+            optionsRu: [`Удвоится (×2)`, `Увеличится в 4 раза (×4)`, `Утроится (×3)`],
+            answerIndex: 1
+          }
+        ]
+      },
+      {
+        id: `t5`,
+        pages: `pp. 204–205`,
+        bookPage: 7,
+        titleEs: `5. Área del rectángulo y del paralelogramo`,
+        titleRu: `5. Площадь прямоугольника и параллелограмма`,
+        rememberEs: `Para determinar el área del paralelogramo, podemos recortar un triángulo de un extremo y pegarlo del otro lado (estrategia de Juan) para transformarlo en un rectángulo de igual base (b) y altura (h). Así, ambas figuras tienen la misma área: A = b × h.`,
+        rememberRu: `Чтобы найти площадь параллелограмма, можно отрезать треугольник с одного края и приставить его к другому (метод Хуана), получив прямоугольник с тем же основанием (b) и высотой (h). Площадь равна: A = b × h.`,
+        formula: `A_paralelogramo = b × h`,
+        simType: `parallelogram`,
+        figures: [
+          { src: `/assets/pdf-figures/p204_juan.png`, capEs: `Estrategia de Juan: recortar y pegar (p. 204)`, capRu: `Метод Хуана: отрезать и перенести (стр. 204)` },
+          { src: `/assets/pdf-figures/p204_paralelogramo_base.png`, capEs: `Base y altura perpendicular a 90° (p. 204)`, capRu: `Основание и перпендикулярная высота (стр. 204)` },
+          { src: `/assets/pdf-figures/p205_sombreada.png`, capEs: `Figura sombreada de Act. 1 (p. 205)`, capRu: `Закрашенная фигура №1 (стр. 205)` },
+          { src: `/assets/pdf-figures/p205_paralelogramo.png`, capEs: `Paralelogramo de Act. 2: 3 cm, 2 cm, 15 mm (p. 205)`, capRu: `Параллелограмм №2: 3 см, 2 см, 15 мм (стр. 205)` },
+          { src: `/assets/pdf-figures/p205_campo.png`, capEs: `Terreno del campo de Act. 6 (p. 205)`, capRu: `Поле из задания №6 (стр. 205)` }
+        ],
+        animSteps: [
+          { es: `Paso 1 (Juan, p. 204): Trazamos la altura h = 3 cm perpendicular a la base b = 5 cm.`, ru: `Шаг 1 (Хуан, стр. 204): Проводим высоту h = 3 см перпендикулярно основанию b = 5 см.` },
+          { es: `Paso 2: Recortamos el triángulo rectángulo izquierdo y lo deslizamos hacia el lado derecho.`, ru: `Шаг 2: Отрезаем левый прямоугольный треугольник и перемещаем его к правому краю.` },
+          { es: `Paso 3: Se forma un rectángulo exacto de 5 cm × 3 cm = 15 cm². Usá el deslizador en el simulador para verlo.`, ru: `Шаг 3: Получается точный прямоугольник 5 см × 3 см = 15 см². Попробуй ползунок в симуляторе!` }
+        ],
+        hintsEs: [
+          `Para Clara (p. 205, Act. 3): cada baldosa mide 25 × 15 = 375 cm². Pasá 6 m² a cm² (60.000 cm²) y dividí.`,
+          `En la Act. 5 (p. 205): si A = b × h, entonces h = A / b = 900 / 25.`
+        ],
+        hintsRu: [
+          `Для Клары (стр. 205, №3): одна плитка = 25 × 15 = 375 см². Переведи 6 м² в 60 000 см² и раздели.`,
+          `В №5 (стр. 205): если A = b × h, то h = A / b = 900 / 25.`
+        ],
+        exercises: [
+          {
+            id: `ex5_1`, ref: `p. 205 · Act. 3a`, type: `number`,
+            img: `/assets/pdf-figures/p204_juan.png`,
+            promptEs: `Clara decora un piso de 6 m² con baldosas en forma de paralelogramo de 25 cm de base y 15 cm de altura. ¿Cuántas baldosas necesita?`,
+            promptRu: `Клара выкладывает пол площадью 6 м² плитками в форме параллелограмма с основанием 25 см и высотой 15 см. Сколько плиток нужно?`,
+            answer: 160, unit: `baldosas`
+          },
+          {
+            id: `ex5_2`, ref: `p. 205 · Act. 5`, type: `number`,
+            img: `/assets/pdf-figures/p205_campo.png`,
+            promptEs: `Si el área de un paralelogramo es de 900 cm² y su base mide 25 cm, ¿cuánto mide su altura?`,
+            promptRu: `Если площадь параллелограмма равна 900 см², а его основание — 25 см, чему равна высота?`,
+            answer: 36, unit: `cm`
+          }
+        ]
+      },
+      {
+        id: `t6`,
+        pages: `pp. 206–207`,
+        bookPage: 9,
+        titleEs: `6. Transformar el trapecio para calcular su área`,
+        titleRu: `6. Преобразование трапеции и её площадь`,
+        rememberEs: `Tanto descomponer el trapecio en dos triángulos (Josefina) como en un rectángulo y dos triángulos (Pedro) lleva a la misma fórmula general usando la base mayor (B), la base menor (b) y la altura (h): Área = ((B + b) × h) / 2.`,
+        rememberRu: `Разбиение трапеции на два треугольника (Хосефина) или на прямоугольник и два треугольника (Педро) даёт одну и ту же формулу с большим основанием (B), малым (b) и высотой (h): Площадь = ((B + b) × h) / 2.`,
+        formula: `A_trapecio = ((B + b) × h) / 2`,
+        simType: `trapezoid`,
+        figures: [
+          { src: `/assets/pdf-figures/p206_josefina_pedro.png`, capEs: `Procedimientos de Josefina y Pedro (p. 206)`, capRu: `Способы Хосефины и Педро (стр. 206)` },
+          { src: `/assets/pdf-figures/p206_trapecio_formula.png`, capEs: `Bases B, b y altura h del trapecio (p. 206)`, capRu: `Основания B, b и высота h (стр. 206)` },
+          { src: `/assets/pdf-figures/p207_luli_trapecio.png`, capEs: `Problema de Luli y Luis (p. 207)`, capRu: `Задача Лули и Луиса (стр. 207)` },
+          { src: `/assets/pdf-figures/p207_abcd.png`, capEs: `Trapecio ABCD de Act. 3 (p. 207)`, capRu: `Трапеция ABCD из №3 (стр. 207)` }
+        ],
+        animSteps: [
+          { es: `Paso 1 (Josefina): Divide el trapecio (B=12, b=8, h=7) en un triángulo rojo (12×7)/2 = 42 y un triángulo verde (8×7)/2 = 28.`, ru: `Шаг 1 (Хосефина): Делит трапецию (B=12, b=8, h=7) на красный треугольник (12×7)/2 = 42 и зелёный (8×7)/2 = 28.` },
+          { es: `Paso 2: Sumando ambos da 42 + 28 = 70 cm². Con Pedro (rectángulo 8×7=56 más dos triángulos=14) también da 70 cm².`, ru: `Шаг 2: Сумма равна 42 + 28 = 70 см². По методу Педро (прямоугольник 8×7=56 и два треугольника=14) тоже 70 см²!` }
+        ],
+        hintsEs: [
+          `Sumá la base mayor y la base menor, multiplicá por la altura y dividí por 2.`,
+          `Para el escenario (p. 207, Act. 4): B = 12 m, b = 8 m, h = 5 m.`
+        ],
+        hintsRu: [
+          `Сложи большее и меньшее основания, умножь на высоту и раздели на 2.`,
+          `Для сцены (стр. 207, №4): B = 12 м, b = 8 м, h = 5 м.`
+        ],
+        exercises: [
+          {
+            id: `ex6_1`, ref: `p. 206 · Act. 1b`, type: `number`,
+            img: `/assets/pdf-figures/p206_josefina_pedro.png`,
+            promptEs: `Calculá el área del trapecio de Josefina y Pedro (base mayor B = 12 cm, base menor b = 8 cm, altura h = 7 cm).`,
+            promptRu: `Вычисли площадь трапеции из задачи Хосефины и Педро (B = 12 см, b = 8 см, h = 7 см).`,
+            answer: 70, unit: `cm²`
+          },
+          {
+            id: `ex6_2`, ref: `p. 207 · Act. 4b–c`, type: `number`,
+            img: `/assets/pdf-figures/p207_luli_trapecio.png`,
+            promptEs: `La escuela construye un escenario trapecial de B = 12 m, b = 8 m y h = 5 m. ¿Cuántos estudiantes pueden bailar al mismo tiempo (1 m² cada uno)?`,
+            promptRu: `Школа строит сцену в форме трапеции с основаниями B = 12 м, b = 8 м и высотой h = 5 м. Сколько учеников смогут танцевать одновременно (по 1 м² на каждого)?`,
+            answer: 50, unit: `estudiantes`
+          }
+        ]
+      },
+      {
+        id: `t7`,
+        pages: `p. 208`,
+        bookPage: 11,
+        titleEs: `7. Explorar el área del romboide`,
+        titleRu: `7. Площадь ромбоида (дельтоида)`,
+        rememberEs: `Un romboide inscrito en un rectángulo ocupa exactamente la mitad de la superficie del rectángulo, porque cada una de las 4 regiones queda dividida en dos triángulos iguales. Su área es la mitad del producto de sus diagonales: Área = (D × d) / 2.`,
+        rememberRu: `Ромбоид (дельтоид), вписанный в прямоугольник, занимает ровно половину площади этого прямоугольника. Его площадь равна половине произведения диагоналей: Площадь = (D × d) / 2.`,
+        formula: `A_romboide = (D × d) / 2`,
+        simType: `rhomboid`,
+        figures: [
+          { src: `/assets/pdf-figures/p208_barrilete.png`, capEs: `Barrilete de Julia (p. 208)`, capRu: `Воздушный змей Хулии (стр. 208)` },
+          { src: `/assets/pdf-figures/p208_debate.png`, capEs: `Intercambio entre Luli y Josefina (p. 208)`, capRu: `Спор Лули и Хосефины (стр. 208)` },
+          { src: `/assets/pdf-figures/p208_romboide.png`, capEs: `Romboide blanco en rectángulo de 40 cm² (p. 208)`, capRu: `Белый ромбоид в прямоугольнике 40 см² (стр. 208)` }
+        ],
+        animSteps: [
+          { es: `Paso 1 (Luli vs Josefina): Luli midió los lados (eso da el perímetro). Josefina tiene razón: para saber cuánto papel comprar se necesita el área.`, ru: `Шаг 1 (Лули и Хосефина): Лули измерила стороны (периметр). Права Хосефина: для покупки бумаги нужна площадь.` },
+          { es: `Paso 2: El rectángulo de 40 cm² contiene 8 triángulos rectángulos; 4 forman el romboide blanco. ¡Su área es 40 / 2 = 20 cm²!`, ru: `Шаг 2: Прямоугольник 40 см² состоит из 8 треугольников, 4 из них образуют ромбоид. Его площадь — 40 / 2 = 20 см²!` }
+        ],
+        hintsEs: [
+          `En la Act. 3 (p. 208), el rectángulo mide 40 cm² y el romboide ocupa exactamente la mitad.`,
+          `Para la hoja de 45 cm × 63 cm (Act. 4), las diagonales máximas son D = 63 cm y d = 45 cm. Calculá (63 × 45) / 2.`
+        ],
+        hintsRu: [
+          `В задании №3 (стр. 208) площадь прямоугольника 40 см², а ромбоид занимает ровно половину.`,
+          `Для листа 45 см × 63 см (№4) максимальные диагонали равны 63 см и 45 см. Вычисли (63 × 45) / 2.`
+        ],
+        exercises: [
+          {
+            id: `ex7_1`, ref: `p. 208 · Act. 3`, type: `number`,
+            img: `/assets/pdf-figures/p208_romboide.png`,
+            promptEs: `Si el rectángulo exterior tiene 40 cm² de área, ¿cuál es el área del romboide blanco inscrito en él?`,
+            promptRu: `Если площадь внешнего прямоугольника равна 40 см², чему равна площадь вписанного в него ромбоида?`,
+            answer: 20, unit: `cm²`
+          },
+          {
+            id: `ex7_2`, ref: `p. 208 · Act. 4`, type: `number`,
+            img: `/assets/pdf-figures/p208_barrilete.png`,
+            promptEs: `Julia compró una hoja rectangular de 45 cm × 63 cm. ¿Cuál es el área máxima del barrilete romboide que puede construir?`,
+            promptRu: `Хулия купила лист бумаги 45 см × 63 см. Какова максимальная площадь ромбовидного воздушного змея из этого листа?`,
+            answer: 1417.5, unit: `cm²`
+          }
+        ]
+      },
+      {
+        id: `t8`,
+        pages: `pp. 209–210`,
+        bookPage: 12,
+        titleEs: `8. Perímetro de circunferencias y área del círculo`,
+        titleRu: `8. Длина окружности и площадь круга`,
+        rememberEs: `La razón entre la longitud C de cualquier circunferencia y su diámetro d es constante y se llama π (pi ≈ 3,14). El perímetro es C = π × d = 2 × π × r. El área del círculo se calcula con A = π × r².`,
+        rememberRu: `Отношение длины любой окружности C к её диаметру d постоянно и равно числу π (π ≈ 3,14). Длина окружности: C = π × d = 2 × π × r. Площадь круга вычисляется по формуле A = π × r².`,
+        formula: `C = π × d = 2 × π × r  |  A = π × r²  (π ≈ 3,14)`,
+        simType: `circle`,
+        figures: [
+          { src: `/assets/pdf-figures/p209_circunferencias.png`, capEs: `Circunferencias 1–4 y consejo de Martín (p. 209)`, capRu: `Окружности 1–4 и совет Мартина (стр. 209)` },
+          { src: `/assets/pdf-figures/p209_anillo.png`, capEs: `Anillo de Ana de 3 cm de diámetro (p. 209)`, capRu: `Кольцо Аны диаметром 3 см (стр. 209)` },
+          { src: `/assets/pdf-figures/p210_circulos_grid.png`, capEs: `Círculos sobre cuadrícula de 1 cm² (p. 210)`, capRu: `Круги на сетке 1 см² (стр. 210)` },
+          { src: `/assets/pdf-figures/p210_pista.png`, capEs: `Pista circular en cuadrado de 50 m (p. 210)`, capRu: `Круглый каток в квадрате 50 м (стр. 210)` }
+        ],
+        animSteps: [
+          { es: `Paso 1 (Anillo de Ana): El diámetro es d = 3 cm, entonces C = 3,14 × 3 = 9,42 cm.`, ru: `Шаг 1 (Кольцо Аны): Диаметр d = 3 см, значит длина C = 3,14 × 3 = 9,42 см.` },
+          { es: `Paso 2 (Pizzas de Alejandro): 1 pizza de d=30 cm (r=15 cm) ⇒ A = 3,14 × 225 = 706,5 cm². Dos pizzas de d=20 cm (r=10 cm) suman 2 × 3,14 × 100 = 628 cm². ¡Gana la de 30 cm!`, ru: `Шаг 2 (Пиццы Алехандро): 1 пицца d=30 см (r=15) даёт 706,5 см². Две по d=20 см (r=10) дают 628 см². Большая пицца выгоднее!` }
+        ],
+        hintsEs: [
+          `Usá π = 3,14. Para el anillo: C = 3,14 × 3.`,
+          `Para la pista de patinaje (p. 210, Act. 4): restá al cuadrado (50 × 50 = 2.500 m²) el círculo de radio r = 25 m (3,14 × 25² = 1.962,5 m²).`
+        ],
+        hintsRu: [
+          `Используй π = 3,14. Для кольца: C = 3,14 × 3.`,
+          `Для катка (стр. 210, №4): вычти из площади квадрата (2 500 м²) площадь круга радиусом 25 м (3,14 × 625 = 1 962,5 м²).`
+        ],
+        exercises: [
+          {
+            id: `ex8_1`, ref: `p. 209 · Act. 2`, type: `number`,
+            img: `/assets/pdf-figures/p209_anillo.png`,
+            promptEs: `Ana quiere saber el perímetro de un anillo de 3 cm de diámetro. Calculalo usando π = 3,14.`,
+            promptRu: `Ана хочет узнать длину окружности кольца диаметром 3 см. Вычисли, используя π = 3,14.`,
+            answer: 9.42, unit: `cm`
+          },
+          {
+            id: `ex8_2`, ref: `p. 210 · Act. 4`, type: `number`,
+            img: `/assets/pdf-figures/p210_pista.png`,
+            promptEs: `Se instala una pista circular dentro de un cuadrado de 50 m de lado. Usando π = 3,14, ¿cuántos m² quedan libres para mobiliario?`,
+            promptRu: `Круглый каток размещён внутри квадрата со стороной 50 м. Используя π = 3,14, сколько м² останется свободно для мебели?`,
+            answer: 537.5, unit: `m²`
+          }
+        ]
+      },
+      {
+        id: `t9`,
+        pages: `p. 211`,
+        bookPage: 14,
+        titleEs: `9. Actividad de Integración`,
+        titleRu: `9. Итоговое практическое задание`,
+        rememberEs: `Al compartir la misma base y la misma altura entre paralelas, un cuadrado y un paralelogramo tienen exactamente la misma área (aunque distinto perímetro). Además, recordar que figuras con igual área pueden tener distinto perímetro es clave en geometría.`,
+        rememberRu: `При равных основании и высоте между параллельными прямыми квадрат и параллелограмм имеют одинаковую площадь (но разный периметр). Фигуры равной площади могут иметь разный периметр.`,
+        formula: `Cuadrado ABCD (4×4) y Paralelogramo BECD (b=4, h=4) ⇒ Área igual = 16 cm²`,
+        simType: `integration`,
+        figures: [
+          { src: `/assets/pdf-figures/p211_abcd_becd.png`, capEs: `Cuadrado ABCD y Paralelogramo BECD (p. 211)`, capRu: `Квадрат ABCD и параллелограмм BECD (стр. 211)` },
+          { src: `/assets/pdf-figures/p211_tres_figuras.png`, capEs: `Tres figuras dentro de cuadrados de lado l (p. 211)`, capRu: `Три фигуры внутри равных квадратов (стр. 211)` }
+        ],
+        animSteps: [
+          { es: `Paso 1: En la Act. 1 (p. 211), el cuadrado ABCD tiene lado 4 cm, así que su perímetro es 16 cm y su área 16 cm².`, ru: `Шаг 1: В задании №1 (стр. 211) сторона квадрата ABCD равна 4 см, поэтому периметр 16 см, а площадь 16 см².` },
+          { es: `Paso 2: El paralelogramo BECD comparte la base BE = 4 cm y la altura BC = 4 cm, por lo que su área también es 4 × 4 = 16 cm².`, ru: `Шаг 2: У параллелограмма BECD основание BE = 4 см и высота BC = 4 см, значит, его площадь тоже 4 × 4 = 16 см².` }
+        ],
+        hintsEs: [
+          `En la Act. 2 (p. 211), si el lado del cuadrado es l: paralelogramo = 0,5·l², romboide = 0,5·l², trapecio = ((l + l/3)·l)/2 = (2/3)·l².`,
+          `¡El trapecio ocupa 2/3 del cuadrado (66,7%), más que la mitad (50%)!`
+        ],
+        hintsRu: [
+          `В №2 (стр. 211), если сторона квадрата l: параллелограмм = 0,5·l², ромбоид = 0,5·l², трапеция = ((l + l/3)·l)/2 = (2/3)·l².`,
+          `Трапеция занимает 2/3 квадрата (66,7%), что больше половины (50%)!`
+        ],
+        exercises: [
+          {
+            id: `ex9_1`, ref: `p. 211 · Act. 1b`, type: `number`,
+            img: `/assets/pdf-figures/p211_abcd_becd.png`,
+            promptEs: `En la imagen del cuadrado ABCD de 4 cm de lado y el paralelogramo BECD que comparte base y altura, ¿cuánto mide el área del paralelogramo?`,
+            promptRu: `На рисунке квадрат ABCD со стороной 4 см и параллелограмм BECD с тем же основанием и высотой. Чему равна площадь параллелограмма?`,
+            answer: 16, unit: `cm²`
+          },
+          {
+            id: `ex9_2`, ref: `p. 211 · Act. 2a`, type: `choice`,
+            img: `/assets/pdf-figures/p211_tres_figuras.png`,
+            promptEs: `Dentro de tres cuadrados iguales hay: un paralelogramo (base ½ l), un trapecio (base menor ⅓ l, base mayor l) y un romboide (D = l, d = l). ¿Qué figura tiene mayor área?`,
+            promptRu: `Внутри трёх равных квадратов со стороной l: параллелограмм (b = ½ l), трапеция (b = ⅓ l, B = l) и ромбоид (D = l, d = l). У какой фигуры наибольшая площадь?`,
+            optionsEs: [`El trapecio (⅔ del cuadrado)`, `El paralelogramo (½ del cuadrado)`, `El romboide (½ del cuadrado)`],
+            optionsRu: [`Трапеция (⅔ квадрата)`, `Параллелограмм (½ квадрата)`, `Ромбоид (½ квадрата)`],
+            answerIndex: 0
+          }
+        ]
+      }
+    ];
+
+    /* ============================================================
+       GLOSSARY & 10-QUESTION QUIZ
+       ============================================================ */
+    const GLOSSARY = [
+      { es: `Perímetro`, ru: `Периметр`, defEs: `Medida del contorno de una figura (suma de sus lados).`, defRu: `Длина контура фигуры (сумма длин её сторон).`, formula: `P = ∑ lados` },
+      { es: `Área`, ru: `Площадь`, defEs: `Cantidad de veces que una unidad cuadrada cubre una superficie.`, defRu: `Количество единичных квадратов, покрывающих поверхность.`, formula: `m², cm², ha` },
+      { es: `Hectárea (ha)`, ru: `Гектар (га)`, defEs: `Área de un cuadrado de 100 m de lado (10.000 m²).`, defRu: `Площадь квадрата со стороной 100 м (10 000 м²).`, formula: `1 ha = 10.000 m²` },
+      { es: `Paralelogramo`, ru: `Параллелограмм`, defEs: `Cuadrilátero de lados opuestos paralelos; equivalente a un rectángulo b×h.`, defRu: `Четырёхугольник с параллельными противоположными сторонами.`, formula: `A = b × h` },
+      { es: `Trapecio`, ru: `Трапеция`, defEs: `Cuadrilátero con un par de lados paralelos (bases B y b).`, defRu: `Четырёхугольник с двумя параллельными основаниями B и b.`, formula: `A = ((B + b) × h) / 2` },
+      { es: `Romboide`, ru: `Ромбоид / Дельтоид`, defEs: `Su área equivale a la mitad del rectángulo formado por sus diagonales D y d.`, defRu: `Его площадь равна половине произведения его диагоналей D и d.`, formula: `A = (D × d) / 2` },
+      { es: `Circunferencia y Círculo`, ru: `Окружность и Круг`, defEs: `Circunferencia es el contorno (C = 2πr); círculo es la superficie interior (A = πr²).`, defRu: `Окружность — это контур (C = 2πr), а круг — внутренняя область (A = πr²).`, formula: `π ≈ 3,14` }
+    ];
+
+    const QUIZ_QUESTIONS = [
+      { id: `q1`, topic: `t1`, qEs: `¿Cuál es el área total de un rectángulo formado por los 12 pentaminós (5 cuadraditos c/u)?`, qRu: `Какова общая площадь прямоугольника из всех 12 фигур пентамино (по 5 квадратиков)?`, optsEs: [`32 u²`, `60 u²`, `46 u²`], optsRu: [`32 ед²`, `60 ед²`, `46 ед²`], ans: 1, expEs: `12 fichas × 5 cuadraditos = 60 u².`, expRu: `12 фигур × 5 квадратиков = 60 ед².` },
+      { id: `q2`, topic: `t2`, qEs: `Si cambiamos la unidad de medida por otra que es la mitad de grande, el número que expresa el área:`, qRu: `Если заменить мерку на вдвое меньшую, числовое значение площади:`, optsEs: [`Se reduce a la mitad`, `No cambia`, `Se duplica`], optsRu: [`Уменьшится вдвое`, `Не изменится`, `Удвоится`], ans: 2, expEs: `Una unidad más pequeña cabe el doble de veces.`, expRu: `Меньшая мерка поместится в фигуре в 2 раза больше раз.` },
+      { id: `q3`, topic: `t3`, qEs: `¿Cuántos centímetros cuadrados (cm²) hay en 1 metro cuadrado (1 m²)?`, qRu: `Сколько квадратных сантиметров (см²) в 1 квадратном метре (1 м²)?`, optsEs: [`100 cm²`, `1.000 cm²`, `10.000 cm²`], optsRu: [`100 см²`, `1 000 см²`, `10 000 см²`], ans: 2, expEs: `100 cm × 100 cm = 10.000 cm².`, expRu: `100 см × 100 см = 10 000 см².` },
+      { id: `q4`, topic: `t4`, qEs: `Si se triplican todos los lados de un cuadrado, ¿qué ocurre con su área?`, qRu: `Если увеличить все стороны квадрата в 3 раза, что произойдёт с его площадью?`, optsEs: [`Se triplica (×3)`, `Se multiplica por 9 (×9)`, `Se multiplica por 6 (×6)`], optsRu: [`Утроится (×3)`, `Увеличится в 9 раз (×9)`, `Увеличится в 6 раз (×6)`], ans: 1, expEs: `3 × 3 = 9 veces el área original.`, expRu: `3 × 3 = в 9 раз больше исходной площади.` },
+      { id: `q5`, topic: `t4`, qEs: `¿A cuántos metros cuadrados equivale 1 hectárea (1 ha)?`, qRu: `Сколько квадратных метров составляет 1 гектар (1 га)?`, optsEs: [`1.000 m²`, `10.000 m²`, `100.000 m²`], optsRu: [`1 000 м²`, `10 000 м²`, `100 000 м²`], ans: 1, expEs: `Un cuadrado de 100 m × 100 m = 10.000 m².`, expRu: `Квадрат 100 м × 100 м = 10 000 м².` },
+      { id: `q6`, topic: `t5`, qEs: `Un paralelogramo tiene 24 cm de base y una altura igual a ¼ de su base. ¿Cuál es su área?`, qRu: `Основание параллелограмма 24 см, а высота равна ¼ основания. Чему равна площадь?`, optsEs: [`144 cm²`, `96 cm²`, `576 cm²`], optsRu: [`144 см²`, `96 см²`, `576 см²`], ans: 0, expEs: `h = 24 / 4 = 6 cm; Área = 24 × 6 = 144 cm².`, expRu: `h = 24 / 4 = 6 см; Площадь = 24 × 6 = 144 см².` },
+      { id: `q7`, topic: `t6`, qEs: `Un trapecio tiene B = 12 m, b = 8 m y h = 5 m. ¿Cuál es su área?`, qRu: `Трапеция имеет основания B = 12 м, b = 8 м и высоту h = 5 м. Чему равна её площадь?`, optsEs: [`100 m²`, `50 m²`, `60 m²`], optsRu: [`100 м²`, `50 м²`, `60 м²`], ans: 1, expEs: `((12 + 8) × 5) / 2 = 100 / 2 = 50 m².`, expRu: `((12 + 8) × 5) / 2 = 100 / 2 = 50 м².` },
+      { id: `q8`, topic: `t7`, qEs: `Si un barrilete romboide tiene diagonales D = 60 cm y d = 40 cm, ¿cuánto papel necesita?`, qRu: `Если у воздушного змея-ромбоида диагонали D = 60 см и d = 40 см, какова его площадь?`, optsEs: [`2.400 cm²`, `1.200 cm²`, `200 cm²`], optsRu: [`2 400 см²`, `1 200 см²`, `200 см²`], ans: 1, expEs: `(60 × 40) / 2 = 1.200 cm².`, expRu: `(60 × 40) / 2 = 1 200 см².` },
+      { id: `q9`, topic: `t8`, qEs: `Según Alejandro (p. 210), ¿qué tiene mayor superficie (usando π = 3,14)?`, qRu: `По задаче Алехандро (стр. 210), у чего больше площадь (π = 3,14)?`, optsEs: [`Una pizza de 30 cm de diámetro`, `Dos pizzas de 20 cm de diámetro`, `Tienen exactamente igual superficie`], optsRu: [`Одна пицца диаметром 30 см`, `Две пиццы диаметром 20 см`, `Площади совершенно равны`], ans: 0, expEs: `π×15² = 225π > 2×π×10² = 200π.`, expRu: `π×15² = 225π > 2×π×10² = 200π.` },
+      { id: `q10`, topic: `t9`, qEs: `Un cuadrado de 4 cm de lado y un paralelogramo de 4 cm de base y 4 cm de altura tienen:`, qRu: `Квадрат со стороной 4 см и параллелограмм с основанием 4 см и высотой 4 см имеют:`, optsEs: [`Igual área e igual perímetro`, `Igual área y distinto perímetro`, `Distinta área e igual perímetro`], optsRu: [`Равную площадь и равный периметр`, `Равную площадь и разный периметр`, `Разную площадь и равный периметр`], ans: 1, expEs: `Ambos tienen 16 cm² de área, pero el lado inclinado del paralelogramo es mayor que 4 cm.`, expRu: `У обоих площадь 16 см², но наклонная сторона параллелограмма длиннее 4 см.` }
+    ];
+
+    /* ============================================================
+       APPLICATION STATE (with LocalStorage + notebookAppApi)
+       ============================================================ */
+    const STORAGE_KEY = `mat7_cap8_perimetro_area_v2`;
+    let appState = {
+      lang: `es`,
+      topicId: `t1`,
+      viewMode: `lesson`,
+      toolTab: `calc`,
+      solved: {},
+      inputs: {},
+      quizAnswers: {},
+      quizResult: null,
+      simParams: {
+        b: 6, h: 4, b2: 4, r: 15, rectPreset: 0,
+        unitPick: `A`, siStep: 3, tilePick: `green`, scaleK: 2,
+        shearPct: 0, trapMode: `josefina`, unwrapPct: 100
+      },
+      animStep: 0,
+      hintLevel: 0,
+      challengeScore: 0,
+      scratchCells: {}
+    };
+
+    let currentChallenge = null;
+    let calcExpr = `0`;
+    let convState = { val: 1, from: `m2`, to: `cm2` };
+    let modalPageNum = 1;
+
+    async function saveAppState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) { /* ignore quota */ }
+      try {
+        if (window.notebookAppApi && window.notebookAppApi.setAppState) {
+          await window.notebookAppApi.setAppState(appState);
+        }
+      } catch (e) { /* safe fallback */ }
+    }
+
+    async function initApp() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === `object`) {
+            appState = Object.assign({}, appState, parsed);
+            appState.simParams = Object.assign({
+              b: 6, h: 4, b2: 4, r: 15, rectPreset: 0,
+              unitPick: `A`, siStep: 3, tilePick: `green`, scaleK: 2,
+              shearPct: 0, trapMode: `josefina`, unwrapPct: 100
+            }, parsed.simParams || {});
+          }
+        }
+      } catch (e) { /* ignore */ }
+
+      try {
+        if (window.notebookAppApi && window.notebookAppApi.getAppState) {
+          const loaded = await window.notebookAppApi.getAppState();
+          if (loaded && typeof loaded === `object`) {
+            appState = Object.assign({}, appState, loaded);
+          }
+        }
+      } catch (e) { /* safe initial empty state */ }
+
+      populateTopicDropdown();
+      renderAll();
+
+      if (window.notebookAppApi && window.notebookAppApi.notifyAppReady) {
+        window.notebookAppApi.notifyAppReady();
+      }
+    }
+
+    /* ============================================================
+       CORE ACTIONS
+       ============================================================ */
+    function setLanguage(lang) {
+      appState.lang = lang;
+      document.documentElement.lang = lang === `es` ? `es-AR` : `ru`;
+      populateTopicDropdown();
+      renderAll();
+      saveAppState();
+    }
+
+    function selectTopic(topicId) {
+      appState.topicId = topicId;
+      appState.animStep = 0;
+      appState.hintLevel = 0;
+      appState.viewMode = `lesson`;
+      populateTopicDropdown();
+      renderAll();
+      saveAppState();
+    }
+
+    function stepTopic(delta) {
+      const idx = TOPICS.findIndex((t) => t.id === appState.topicId);
+      const nextIdx = Math.max(0, Math.min(TOPICS.length - 1, idx + delta));
+      selectTopic(TOPICS[nextIdx].id);
+      window.scrollTo({ top: 0, behavior: `smooth` });
+    }
+
+    function setViewMode(mode) {
+      appState.viewMode = mode;
+      renderAll();
+      saveAppState();
+    }
+
+    function setToolTab(tab) {
+      appState.toolTab = tab;
+      renderToolbox();
+      saveAppState();
+    }
+
+    let isFocusFullscreen = false;
+
+    async function toggleFullscreen() {
+      const entering = !isFocusFullscreen;
+      isFocusFullscreen = entering;
+      document.body.classList.toggle(`focus-fullscreen`, entering);
+      updateFullscreenButton();
+
+      try {
+        if (entering) {
+          if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+          }
+        } else if (document.fullscreenElement && document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      } catch (e) {
+        /* Fallback focus-fullscreen class remains active if iframe blocks native fullscreen */
+      }
+    }
+
+    function updateFullscreenButton() {
+      const btn = document.getElementById(`btn-fullscreen`);
+      const t = UI[appState.lang];
+      if (!btn) return;
+      btn.setAttribute(`aria-pressed`, String(isFocusFullscreen));
+      const iconName = isFocusFullscreen ? `minimize-2` : `maximize-2`;
+      const text = isFocusFullscreen ? t.fullscreenExit : t.fullscreenEnter;
+      btn.innerHTML = `<i data-lucide="${iconName}" width="16" height="16"></i><span id="ui-fullscreen-btn">${text}</span>`;
+      if (window.lucide && window.lucide.createIcons) {
+        window.lucide.createIcons();
+      }
+    }
+
+    document.addEventListener(`fullscreenchange`, () => {
+      if (!document.fullscreenElement && isFocusFullscreen) {
+        isFocusFullscreen = false;
+        document.body.classList.remove(`focus-fullscreen`);
+        updateFullscreenButton();
+      } else if (document.fullscreenElement && !isFocusFullscreen) {
+        isFocusFullscreen = true;
+        document.body.classList.add(`focus-fullscreen`);
+        updateFullscreenButton();
+      }
+    });
+
+    function handleResetProgress(btn) {
+      const t = UI[appState.lang];
+      if (btn.dataset.armed !== `true`) {
+        btn.dataset.armed = `true`;
+        const span = document.getElementById(`ui-reset-label`);
+        if (span) span.textContent = t.resetConfirm;
+        setTimeout(() => {
+          if (btn.dataset.armed === `true`) {
+            btn.dataset.armed = `false`;
+            const s = document.getElementById(`ui-reset-label`);
+            if (s) s.textContent = UI[appState.lang].resetLabel;
+          }
+        }, 3500);
+        return;
+      }
+      btn.dataset.armed = `false`;
+      appState.solved = {};
+      appState.inputs = {};
+      appState.quizAnswers = {};
+      appState.quizResult = null;
+      appState.challengeScore = 0;
+      appState.hintLevel = 0;
+      appState.scratchCells = {};
+      populateTopicDropdown();
+      renderAll();
+      saveAppState();
+    }
+
+    function stepAnimation(delta) {
+      const topic = getCurrentTopic();
+      const max = topic.animSteps.length - 1;
+      appState.animStep = Math.max(0, Math.min(max, appState.animStep + delta));
+      renderMainPanel();
+      saveAppState();
+    }
+
+    function nextTutorHint() {
+      const topic = getCurrentTopic();
+      const hints = appState.lang === `es` ? topic.hintsEs : topic.hintsRu;
+      appState.hintLevel = (appState.hintLevel % hints.length) + 1;
+      renderTutor();
+      saveAppState();
+    }
+
+    function showTutorConcept() {
+      appState.hintLevel = 0;
+      renderTutor();
+      saveAppState();
+    }
+
+    function checkNumericExercise(exId, expected) {
+      const inp = document.getElementById(`inp-${exId}`);
+      const fb = document.getElementById(`fb-${exId}`);
+      if (!inp || !fb) return;
+      const raw = String(inp.value).replace(`,`, `.`).trim();
+      const val = parseFloat(raw);
+      const t = UI[appState.lang];
+
+      appState.inputs[exId] = inp.value;
+
+      if (!Number.isNaN(val) && Math.abs(val - expected) <= 0.05) {
+        appState.solved[exId] = true;
+        fb.className = `feedback-msg ok`;
+        fb.textContent = `✓ ${t.correctMsg}`;
+      } else {
+        fb.className = `feedback-msg err`;
+        fb.textContent = `✕ ${t.wrongMsg}`;
+      }
+      updateKpis();
+      populateTopicDropdown();
+      renderBadges();
+      const card = document.getElementById(`card-${exId}`);
+      if (card && appState.solved[exId]) card.classList.add(`solved`);
+      saveAppState();
+    }
+
+    function selectChoiceExercise(exId, idx, correctIdx) {
+      appState.inputs[exId] = idx;
+      const fb = document.getElementById(`fb-${exId}`);
+      const t = UI[appState.lang];
+
+      const btns = document.querySelectorAll(`[data-ex-choice="${exId}"]`);
+      btns.forEach((b, i) => b.setAttribute(`aria-pressed`, String(i === idx)));
+
+      if (idx === correctIdx) {
+        appState.solved[exId] = true;
+        if (fb) {
+          fb.className = `feedback-msg ok`;
+          fb.textContent = `✓ ${t.correctMsg}`;
+        }
+        const card = document.getElementById(`card-${exId}`);
+        if (card) card.classList.add(`solved`);
+      } else {
+        if (fb) {
+          fb.className = `feedback-msg err`;
+          fb.textContent = `✕ ${t.wrongMsg}`;
+        }
+      }
+      updateKpis();
+      populateTopicDropdown();
+      renderBadges();
+      saveAppState();
+    }
+
+    function updateSimParam(key, val, isNumeric = true) {
+      appState.simParams[key] = isNumeric ? parseFloat(val) : val;
+      renderSimulator();
+      saveAppState();
+    }
+
+    function selectQuizOption(qId, idx) {
+      appState.quizAnswers[qId] = idx;
+      const btns = document.querySelectorAll(`[data-quiz-choice="${qId}"]`);
+      btns.forEach((b, i) => b.setAttribute(`aria-pressed`, String(i === idx)));
+      saveAppState();
+    }
+
+    function submitQuiz() {
+      let correct = 0;
+      const weakTopics = [];
+      const strongTopics = [];
+      QUIZ_QUESTIONS.forEach((q) => {
+        if (appState.quizAnswers[q.id] === q.ans) {
+          correct += 1;
+          if (!strongTopics.includes(q.topic)) strongTopics.push(q.topic);
+        } else {
+          if (!weakTopics.includes(q.topic)) weakTopics.push(q.topic);
+        }
+      });
+      appState.quizResult = {
+        score10: Math.max(1, correct),
+        correct: correct,
+        incorrect: QUIZ_QUESTIONS.length - correct,
+        pct: Math.round((correct / QUIZ_QUESTIONS.length) * 100),
+        weakTopics: weakTopics,
+        strongTopics: strongTopics
+      };
+      updateKpis();
+      renderBadges();
+      renderMainPanel();
+      saveAppState();
+    }
+
+    function retryQuiz() {
+      appState.quizAnswers = {};
+      appState.quizResult = null;
+      renderMainPanel();
+      saveAppState();
+    }
+
+    function flipFlashcard(idx) {
+      const el = document.getElementById(`fc-body-${idx}`);
+      if (el) el.classList.toggle(`hidden`);
+    }
+
+    function answerChallenge(ans) {
+      if (!currentChallenge) return;
+      const fb = document.getElementById(`challenge-fb`);
+      if (ans === currentChallenge.ans) {
+        appState.challengeScore += 1;
+        generateChallenge();
+        renderChallengeCard();
+        const fbNew = document.getElementById(`challenge-fb`);
+        if (fbNew) {
+          fbNew.className = `feedback-msg ok`;
+          fbNew.textContent = appState.lang === `es` ? `¡Correcto! +1 punto.` : `Верно! +1 очко.`;
+        }
+      } else if (fb) {
+        fb.className = `feedback-msg err`;
+        fb.textContent = appState.lang === `es` ? `No coincide. Probá nuevamente.` : `Неверно. Попробуй ещё раз.`;
+      }
+      renderBadges();
+      saveAppState();
+    }
+
+    function exportProgressCsv() {
+      const rows = [`Tema,Pagina,Ejercicios_Resueltos`];
+      TOPICS.forEach((tp) => {
+        const done = tp.exercises.filter((e) => appState.solved[e.id]).length;
+        rows.push(`"${tp.titleEs}","${tp.pages}",${done}/${tp.exercises.length}`);
+      });
+      if (appState.quizResult) {
+        rows.push(`Autoevaluacion,Cap. 8,${appState.quizResult.score10}/10`);
+      }
+      const csv = rows.join(`\n`);
+      if (window.notebookAppApi && window.notebookAppApi.triggerFileDownload) {
+        window.notebookAppApi.triggerFileDownload({
+          content: csv,
+          contentType: `text/csv`,
+          encoding: `UTF-8`,
+          filename: `progreso_geometria_7grado.csv`
+        });
+      } else {
+        const blob = new Blob([csv], { type: `text/csv;charset=utf-8;` });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement(`a`);
+        a.href = url;
+        a.download = `progreso_geometria_7grado.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    /* ============================================================
+       MODAL: ORIGINAL PDF PAGE FLIPPER & FIGURE LIGHTBOX
+       ============================================================ */
+    function openFigureModal(src, caption) {
+      const modal = document.getElementById(`book-modal`);
+      const title = document.getElementById(`modal-title`);
+      const body = document.getElementById(`modal-body`);
+      if (!modal || !title || !body) return;
+      title.textContent = caption;
+      body.innerHTML = `<img src="${src}" alt="${caption}">`;
+      modal.classList.remove(`hidden`);
+    }
+
+    function openBookModal(pageNum) {
+      const tp = getCurrentTopic();
+      modalPageNum = pageNum || tp.bookPage || 1;
+      renderBookModalPage();
+      const modal = document.getElementById(`book-modal`);
+      if (modal) modal.classList.remove(`hidden`);
+    }
+
+    function renderBookModalPage() {
+      const title = document.getElementById(`modal-title`);
+      const body = document.getElementById(`modal-body`);
+      if (!title || !body) return;
+      const isEs = appState.lang === `es`;
+      const realPage = 197 + modalPageNum;
+      const padded = String(modalPageNum).padStart(2, `0`);
+      title.textContent = isEs
+        ? `Libro Original · Página ${realPage} (Capítulo 8)`
+        : `Оригинал учебника · Страница ${realPage} (Глава 8)`;
+
+      const btns = Array.from({ length: 14 }, (_, i) => {
+        const n = i + 1;
+        return `<button type="button" class="page-num-btn" aria-current="${n === modalPageNum ? `page` : `false`}" onclick="setModalPage(${n})">${197 + n}</button>`;
+      }).join(``);
+
+      body.innerHTML = `
+        <div class="page-strip">${btns}</div>
+        <img src="/assets/pdf-pages/page-${padded}.png" alt="Página ${realPage} del Capítulo 8">
+        <div style="display:flex; gap:0.75rem; justify-content:center;">
+          <button type="button" class="btn-secondary" onclick="setModalPage(${Math.max(1, modalPageNum - 1)})">← ${isEs ? `Anterior` : `Назад`}</button>
+          <button type="button" class="btn-primary" onclick="setModalPage(${Math.min(14, modalPageNum + 1)})">${isEs ? `Siguiente` : `Вперёд`} →</button>
+        </div>
+      `;
+    }
+
+    function setModalPage(n) {
+      modalPageNum = Math.max(1, Math.min(14, n));
+      renderBookModalPage();
+    }
+
+    function closeModal() {
+      const modal = document.getElementById(`book-modal`);
+      if (modal) modal.classList.add(`hidden`);
+    }
+
+    /* ============================================================
+       STUDENT ACCESSORIES: CALCULATOR, CONVERTER, 1cm² GRID
+       ============================================================ */
+    function renderToolbox() {
+      const host = document.getElementById(`toolbox-body`);
+      if (!host) return;
+      const t = UI[appState.lang];
+      const isEs = appState.lang === `es`;
+
+      const tabIds = { calc: `tool-tab-calc`, conv: `tool-tab-conv`, grid: `tool-tab-grid` };
+      const tabNames = { calc: t.toolCalc, conv: t.toolConv, grid: t.toolGrid };
+      Object.keys(tabIds).forEach((k) => {
+        const b = document.getElementById(tabIds[k]);
+        if (b) {
+          b.setAttribute(`aria-selected`, String(appState.toolTab === k));
+          b.textContent = tabNames[k];
+        }
+      });
+
+      if (appState.toolTab === `calc`) {
+        host.innerHTML = `
+          <div style="display:grid; gap:0.5rem;">
+            <div class="calc-display" id="calc-disp">${calcExpr}</div>
+            <div class="calc-grid">
+              <button type="button" class="calc-key op" onclick="calcAct('C')">C</button>
+              <button type="button" class="calc-key op" onclick="calcAct('PI')">π</button>
+              <button type="button" class="calc-key op" onclick="calcAct('SQ')">x²</button>
+              <button type="button" class="calc-key op" onclick="calcAct('/')">÷</button>
+              <button type="button" class="calc-key" onclick="calcAct('7')">7</button>
+              <button type="button" class="calc-key" onclick="calcAct('8')">8</button>
+              <button type="button" class="calc-key" onclick="calcAct('9')">9</button>
+              <button type="button" class="calc-key op" onclick="calcAct('*')">×</button>
+              <button type="button" class="calc-key" onclick="calcAct('4')">4</button>
+              <button type="button" class="calc-key" onclick="calcAct('5')">5</button>
+              <button type="button" class="calc-key" onclick="calcAct('6')">6</button>
+              <button type="button" class="calc-key op" onclick="calcAct('-')">−</button>
+              <button type="button" class="calc-key" onclick="calcAct('1')">1</button>
+              <button type="button" class="calc-key" onclick="calcAct('2')">2</button>
+              <button type="button" class="calc-key" onclick="calcAct('3')">3</button>
+              <button type="button" class="calc-key op" onclick="calcAct('+')">+</button>
+              <button type="button" class="calc-key" onclick="calcAct('0')">0</button>
+              <button type="button" class="calc-key" onclick="calcAct('.')">.</button>
+              <button type="button" class="calc-key op" onclick="calcAct('DEL')">⌫</button>
+              <button type="button" class="calc-key eq" onclick="calcAct('=')">=</button>
+            </div>
+            <div style="font-size:0.75rem; color:var(--on-surface-variant);">
+              ${isEs ? `Usa π = 3.14 como en el libro (p. 209).` : `Использует π = 3.14 как в учебнике (стр. 209).`}
+            </div>
+          </div>
+        `;
+      } else if (appState.toolTab === `conv`) {
+        const units = [
+          { id: `km2`, label: `km²`, factor: 1000000 },
+          { id: `ha`, label: `ha (hm²)`, factor: 10000 },
+          { id: `dam2`, label: `dam²`, factor: 100 },
+          { id: `m2`, label: `m²`, factor: 1 },
+          { id: `dm2`, label: `dm²`, factor: 0.01 },
+          { id: `cm2`, label: `cm²`, factor: 0.0001 },
+          { id: `mm2`, label: `mm²`, factor: 0.000001 }
+        ];
+        const fObj = units.find((u) => u.id === convState.from) || units[3];
+        const tObj = units.find((u) => u.id === convState.to) || units[5];
+        const outVal = (convState.val * fObj.factor) / tObj.factor;
+        const formatted = Number(outVal.toPrecision(8)).toString();
+
+        host.innerHTML = `
+          <div class="conv-box">
+            <label style="font-size:0.78rem; font-weight:600; color:var(--on-surface-variant);">
+              ${isEs ? `Valor a convertir` : `Значение для перевода`}
+            </label>
+            <input type="number" class="text-input" value="${convState.val}" oninput="updateConv('val', this.value)">
+            <div class="conv-row">
+              <select class="text-input" onchange="updateConv('from', this.value)">
+                ${units.map((u) => `<option value="${u.id}" ${u.id === convState.from ? `selected` : ``}>${u.label}</option>`).join(``)}
+              </select>
+              <select class="text-input" onchange="updateConv('to', this.value)">
+                ${units.map((u) => `<option value="${u.id}" ${u.id === convState.to ? `selected` : ``}>→ ${u.label}</option>`).join(``)}
+              </select>
+            </div>
+            <div class="conv-result">${convState.val} ${fObj.label} = ${formatted} ${tObj.label}</div>
+          </div>
+        `;
+      } else {
+        const cells = appState.scratchCells || {};
+        const { area, perim } = computeScratchStats(cells);
+        let gridHtml = ``;
+        for (let r = 0; r < 8; r += 1) {
+          for (let c = 0; c < 10; c += 1) {
+            const key = `${r}_${c}`;
+            const on = Boolean(cells[key]);
+            gridHtml += `<button type="button" class="scratch-cell ${on ? `active` : ``}" onclick="toggleScratchCell('${key}')" aria-label="Celda ${r + 1},${c + 1}"></button>`;
+          }
+        }
+        host.innerHTML = `
+          <div style="display:grid; gap:0.55rem;">
+            <div style="font-size:0.78rem; color:var(--on-surface-variant);">
+              ${isEs ? `Hacé clic en los cuadraditos (1 cm²) para dibujar tu figura y ver Área y Perímetro al instante:` : `Нажимай на клетки (1 см²), чтобы нарисовать фигуру и сразу увидеть площадь и периметр:`}
+            </div>
+            <div class="scratch-grid">${gridHtml}</div>
+            <div class="scratch-stats">
+              <span>${isEs ? `Área` : `Площадь`}: ${area} cm²</span>
+              <span>${isEs ? `Perímetro` : `Периметр`}: ${perim} cm</span>
+            </div>
+            <button type="button" class="btn-secondary" onclick="clearScratchGrid()">
+              ${isEs ? `Limpiar cuadrícula` : `Очистить сетку`}
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function calcAct(k) {
+      if (k === `C`) {
+        calcExpr = `0`;
+      } else if (k === `DEL`) {
+        calcExpr = calcExpr.length > 1 ? calcExpr.slice(0, -1) : `0`;
+      } else if (k === `PI`) {
+        calcExpr = calcExpr === `0` ? `3.14` : `${calcExpr}3.14`;
+      } else if (k === `SQ`) {
+        try {
+          const v = evalSafeMath(calcExpr);
+          calcExpr = String(Number((v * v).toFixed(6)));
+        } catch { calcExpr = `Error`; }
+      } else if (k === `=`) {
+        try {
+          const v = evalSafeMath(calcExpr);
+          calcExpr = Number.isFinite(v) ? String(Number(v.toFixed(6))) : `Error`;
+        } catch { calcExpr = `Error`; }
+      } else {
+        calcExpr = (calcExpr === `0` && k !== `.`) || calcExpr === `Error` ? k : `${calcExpr}${k}`;
+      }
+      const d = document.getElementById(`calc-disp`);
+      if (d) d.textContent = calcExpr;
+    }
+
+    function evalSafeMath(expr) {
+      if (!/^[0-9+\-*/.() ]+$/.test(expr)) throw new Error(`Invalid`);
+      return Function(`"use strict"; return (${expr});`)();
+    }
+
+    function updateConv(field, val) {
+      convState[field] = field === `val` ? (parseFloat(val) || 0) : val;
+      renderToolbox();
+    }
+
+    function toggleScratchCell(key) {
+      if (!appState.scratchCells) appState.scratchCells = {};
+      if (appState.scratchCells[key]) delete appState.scratchCells[key];
+      else appState.scratchCells[key] = true;
+      renderToolbox();
+      saveAppState();
+    }
+
+    function clearScratchGrid() {
+      appState.scratchCells = {};
+      renderToolbox();
+      saveAppState();
+    }
+
+    function computeScratchStats(cells) {
+      const keys = Object.keys(cells).filter((k) => cells[k]);
+      const area = keys.length;
+      let perim = 0;
+      keys.forEach((k) => {
+        const [r, c] = k.split(`_`).map(Number);
+        const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+        dirs.forEach(([dr, dc]) => {
+          if (!cells[`${r + dr}_${c + dc}`]) perim += 1;
+        });
+      });
+      return { area, perim };
+    }
+
+    /* ============================================================
+       HELPERS & RENDERING
+       ============================================================ */
+    function getCurrentTopic() {
+      return TOPICS.find((t) => t.id === appState.topicId) || TOPICS[0];
+    }
+
+    function populateTopicDropdown() {
+      const sel = document.getElementById(`topic-dropdown`);
+      if (!sel) return;
+      sel.innerHTML = ``;
+      TOPICS.forEach((tp) => {
+        const opt = document.createElement(`option`);
+        opt.value = tp.id;
+        const doneCount = tp.exercises.filter((e) => appState.solved[e.id]).length;
+        const mark = doneCount === tp.exercises.length ? `✓ ` : ``;
+        const title = appState.lang === `es` ? tp.titleEs : tp.titleRu;
+        opt.textContent = `${mark}${title} (${tp.pages})`;
+        if (tp.id === appState.topicId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }
+
+    function renderAll() {
+      applyStaticTranslations();
+      updateTabsState();
+      updateKpis();
+      renderMainPanel();
+      renderToolbox();
+      renderTutor();
+      renderBadges();
+      if (window.lucide && window.lucide.createIcons) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function applyStaticTranslations() {
+      const t = UI[appState.lang];
+      const map = {
+        "ui-series-name": t.seriesName,
+        "ui-main-title": t.mainTitle,
+        "ui-open-book-btn": t.openBookBtn,
+        "ui-reset-label": t.resetLabel,
+        "ui-main-subtitle": t.mainSubtitle,
+        "ui-main-desc": t.mainDesc,
+        "ui-kpi-prog-lbl": t.kpiProg,
+        "ui-kpi-ex-lbl": t.kpiEx,
+        "ui-kpi-eval-lbl": t.kpiEval,
+        "ui-select-topic-lbl": t.selectTopic,
+        "ui-tab-lesson": t.tabLesson,
+        "ui-tab-resources": t.tabResources,
+        "ui-tab-quiz": t.tabQuiz,
+        "ui-tab-teacher": t.tabTeacher,
+        "ui-toolbox-title": t.toolboxTitle,
+        "ui-tutor-title": t.tutorTitle,
+        "ui-hint-btn": t.hintBtn,
+        "ui-concept-btn": t.conceptBtn,
+        "ui-badges-title": t.badgesTitle,
+        "ui-source-title": t.sourceTitle,
+        "ui-source-credit": t.sourceCredit,
+        "ui-view-pages-btn": t.viewPagesBtn,
+        "ui-close-modal": t.closeModal
+      };
+      Object.keys(map).forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = map[id];
+      });
+      const btnEs = document.getElementById(`btn-lang-es`);
+      const btnRu = document.getElementById(`btn-lang-ru`);
+      if (btnEs) btnEs.setAttribute(`aria-pressed`, String(appState.lang === `es`));
+      if (btnRu) btnRu.setAttribute(`aria-pressed`, String(appState.lang === `ru`));
+      updateFullscreenButton();
+    }
+
+    function updateTabsState() {
+      const modes = [`lesson`, `resources`, `quiz`, `teacher`];
+      modes.forEach((m) => {
+        const btn = document.getElementById(`tab-${m}`);
+        if (btn) btn.setAttribute(`aria-selected`, String(appState.viewMode === m));
+      });
+    }
+
+    function updateKpis() {
+      const totalEx = TOPICS.reduce((acc, tp) => acc + tp.exercises.length, 0);
+      const solvedCount = TOPICS.reduce((acc, tp) => acc + tp.exercises.filter((e) => appState.solved[e.id]).length, 0);
+      const pct = Math.round((solvedCount / totalEx) * 100);
+
+      const elProg = document.getElementById(`kpi-progress`);
+      const elBar = document.getElementById(`progress-bar-fill`);
+      const elSol = document.getElementById(`kpi-solved`);
+      const elGrade = document.getElementById(`kpi-grade`);
+
+      if (elProg) elProg.textContent = `${pct}%`;
+      if (elBar) elBar.style.width = `${pct}%`;
+      if (elSol) elSol.textContent = `${solvedCount}/${totalEx}`;
+      if (elGrade) elGrade.textContent = appState.quizResult ? `${appState.quizResult.score10}/10` : `—/10`;
+    }
+
+    function renderMainPanel() {
+      const host = document.getElementById(`main-content`);
+      if (!host) return;
+      if (appState.viewMode === `lesson`) {
+        renderLessonView(host);
+      } else if (appState.viewMode === `resources`) {
+        renderResourcesView(host);
+      } else if (appState.viewMode === `quiz`) {
+        renderQuizView(host);
+      } else {
+        renderTeacherView(host);
+      }
+      if (window.lucide && window.lucide.createIcons) {
+        window.lucide.createIcons();
+      }
+    }
+
+    /* ============================================================
+       1) LESSON VIEW + TEXTBOOK IMAGES + INTERACTIVE SIMULATORS
+       ============================================================ */
+    function renderLessonView(host) {
+      const tp = getCurrentTopic();
+      const t = UI[appState.lang];
+      const isEs = appState.lang === `es`;
+      const topicIndex = TOPICS.findIndex((item) => item.id === tp.id);
+      const solvedInTopic = tp.exercises.filter((e) => appState.solved[e.id]).length;
+      const isDone = solvedInTopic === tp.exercises.length;
+      const stepObj = tp.animSteps[appState.animStep] || tp.animSteps[0];
+
+      const figuresHtml = tp.figures.map((fig) => {
+        const cap = isEs ? fig.capEs : fig.capRu;
+        const safeCap = cap.replace(/'/g, `\\&#39;`);
+        return `
+          <button type="button" class="figure-tile" onclick="openFigureModal('${fig.src}', '${safeCap}')">
+            <div class="figure-img-wrap">
+              <img src="${fig.src}" alt="${cap}" loading="lazy">
+            </div>
+            <div class="figure-caption">
+              <span>${cap}</span>
+              <span class="figure-zoom-hint">⤢ ${t.zoomHint}</span>
+            </div>
+          </button>
+        `;
+      }).join(``);
+
+      host.innerHTML = `
+        <div class="topic-header">
+          <div>
+            <div class="topic-kicker">${tp.pages} · ${isEs ? `Capítulo 8` : `Глава 8`}</div>
+            <h2 class="topic-title">${isEs ? tp.titleEs : tp.titleRu}</h2>
+            <div class="topic-bilingual-sub">${isEs ? tp.titleRu : tp.titleEs}</div>
+          </div>
+          <div class="topic-header-actions">
+            <span class="status-text ${isDone ? `done` : ``}">
+              ${isDone ? `✓ ${t.completedLabel}` : `${t.inProgressLabel} · ${solvedInTopic}/${tp.exercises.length}`}
+            </span>
+            <button type="button" class="btn-mint" onclick="openBookModal(${tp.bookPage})">
+              <i data-lucide="book-open" width="15" height="15"></i>
+              ${t.openTopicPage} (${197 + tp.bookPage})
+            </button>
+          </div>
+        </div>
+
+        <!-- TEXTBOOK "PARA RECORDAR" CALLOUT -->
+        <div class="remember-wrap">
+          <div class="remember-tab">
+            <span class="remember-dot" aria-hidden="true"></span>
+            <span>${t.rememberHeading}</span>
+          </div>
+          <section class="remember-box" aria-label="Para recordar">
+            <div>${isEs ? tp.rememberEs : tp.rememberRu}</div>
+            <div class="formula-pill">${tp.formula}</div>
+          </section>
+        </div>
+
+        <!-- ORIGINAL PDF ILLUSTRATIONS FOR THIS TOPIC -->
+        <section class="pdf-figures-panel" aria-label="Figuras del libro">
+          <div class="lab-head">
+            <h3 class="lab-title">${t.figuresHeading}</h3>
+            <span style="font-size:0.8rem; color:var(--on-surface-variant);">${tp.pages}</span>
+          </div>
+          <div class="figures-grid">${figuresHtml}</div>
+        </section>
+
+        <!-- INTERACTIVE SIMULATOR -->
+        <section class="lab-card" aria-label="Simulador">
+          <div class="lab-head">
+            <h3 class="lab-title">${t.simHeading}</h3>
+            <span style="font-size:0.8rem; color:var(--on-surface-variant);">${tp.pages}</span>
+          </div>
+          <div class="lab-grid" id="simulator-container"></div>
+        </section>
+
+        <!-- STEP-BY-STEP EXPLANATION -->
+        <section class="lab-card" aria-label="Explicación paso a paso">
+          <div class="lab-head">
+            <h3 class="lab-title">${t.animHeading}</h3>
+            <span style="font-size:0.82rem; font-weight:700; color:var(--primary);">${t.stepLabel} ${appState.animStep + 1} / ${tp.animSteps.length}</span>
+          </div>
+          <div class="subtitle-box">
+            <div><strong>ES:</strong> ${stepObj.es}</div>
+            <div style="margin-top:4px; color:var(--on-surface-variant);"><strong>RU:</strong> ${stepObj.ru}</div>
+          </div>
+          <div class="anim-bar">
+            <button type="button" class="btn-secondary" onclick="stepAnimation(-1)" ${appState.animStep === 0 ? `disabled` : ``}>← ${t.prevStepBtn}</button>
+            <button type="button" class="btn-primary" onclick="stepAnimation(1)" ${appState.animStep === tp.animSteps.length - 1 ? `disabled` : ``}>${t.nextStepBtn} →</button>
+          </div>
+        </section>
+
+        <!-- EXERCISES WITH FIGURE PREVIEW -->
+        <section class="exercise-list" aria-label="Ejercicios">
+          <h3 class="lab-title">${t.exHeading}</h3>
+          ${tp.exercises.map((ex, i) => renderExerciseCard(ex, i)).join(``)}
+        </section>
+
+        <!-- PREV / NEXT TOPIC FOOTER -->
+        <div class="lesson-footer-nav">
+          <button type="button" class="btn-secondary" onclick="stepTopic(-1)" ${topicIndex === 0 ? `disabled` : ``}>
+            ← ${t.prevTopicBtn}
+          </button>
+          <button type="button" class="btn-primary" onclick="stepTopic(1)" ${topicIndex === TOPICS.length - 1 ? `disabled` : ``}>
+            ${t.nextTopicBtn} →
+          </button>
+        </div>
+      `;
+
+      renderSimulator();
+    }
+
+    function renderExerciseCard(ex, idx) {
+      const t = UI[appState.lang];
+      const isEs = appState.lang === `es`;
+      const solved = Boolean(appState.solved[ex.id]);
+      const savedVal = appState.inputs[ex.id] !== undefined ? appState.inputs[ex.id] : ``;
+
+      let controlsHtml = ``;
+      if (ex.type === `number`) {
+        controlsHtml = `
+          <div class="ex-input-row">
+            <div class="input-wrap">
+              <label for="inp-${ex.id}">${t.answerPlaceholder} (${ex.unit})</label>
+              <input id="inp-${ex.id}" class="text-input" type="text" inputmode="decimal" value="${savedVal}" onkeydown="if(event.key==='Enter') checkNumericExercise('${ex.id}', ${ex.answer})">
+            </div>
+            <button type="button" class="btn-primary" onclick="checkNumericExercise('${ex.id}', ${ex.answer})">${t.checkBtn}</button>
+          </div>
+        `;
+      } else {
+        const opts = isEs ? ex.optionsEs : ex.optionsRu;
+        controlsHtml = `
+          <div class="choice-grid">
+            ${opts.map((opt, i) => `
+              <button type="button" class="choice-btn" data-ex-choice="${ex.id}" aria-pressed="${savedVal === i ? `true` : `false`}" onclick="selectChoiceExercise('${ex.id}', ${i}, ${ex.answerIndex})">
+                ${opt}
+              </button>
+            `).join(``)}
+          </div>
+        `;
+      }
+
+      const imgHtml = ex.img ? `
+        <button type="button" class="ex-thumb" onclick="openFigureModal('${ex.img}', '${ex.ref}')" title="${t.zoomHint}">
+          <img src="${ex.img}" alt="${ex.ref}">
+        </button>
+      ` : ``;
+
+      return `
+        <article class="exercise-card ${solved ? `solved` : ``}" id="card-${ex.id}">
+          <div class="ex-meta">
+            <span class="ex-ref">${ex.ref}</span>
+            <span>${isEs ? `Actividad` : `Задание`} #${idx + 1}</span>
+          </div>
+          <div class="ex-body-split">
+            <div style="display:grid; gap:0.75rem;">
+              <p class="ex-prompt">${isEs ? ex.promptEs : ex.promptRu}</p>
+              ${controlsHtml}
+            </div>
+            ${imgHtml}
+          </div>
+          <div class="feedback-msg ${solved ? `ok` : ``}" id="fb-${ex.id}">${solved ? `✓ ${t.correctMsg}` : ``}</div>
+        </article>
+      `;
+    }
+
+    /* ============================================================
+       CUSTOM INTERACTIVE SIMULATORS FOR ALL 9 TOPICS
+       ============================================================ */
+    function renderSimulator() {
+      const box = document.getElementById(`simulator-container`);
+      if (!box) return;
+      const tp = getCurrentTopic();
+      const p = appState.simParams;
+      const isEs = appState.lang === `es`;
+
+      if (tp.simType === `pentamino`) {
+        const presets = [{ w: 10, h: 6 }, { w: 12, h: 5 }, { w: 20, h: 3 }];
+        const cur = presets[p.rectPreset] || presets[0];
+        const perim = 2 * (cur.w + cur.h);
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 280 120" aria-hidden="true">
+              <rect x="20" y="18" width="${cur.w * 11}" height="${cur.h * 11}" class="geo-shape" rx="4"/>
+              <text x="20" y="108" class="geo-label">${cur.w} × ${cur.h} = 60 u²  |  P = ${perim} u</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div class="slider-block">
+              <div class="slider-label-row">
+                <label for="sim-preset">${isEs ? `Rectángulo (12 pentaminós)` : `Прямоугольник (12 пентамино)`}</label>
+                <span>${cur.w} × ${cur.h}</span>
+              </div>
+              <input id="sim-preset" type="range" min="0" max="2" step="1" value="${p.rectPreset}" oninput="updateSimParam('rectPreset', this.value)">
+            </div>
+            <div class="sim-readout">
+              <div>${isEs ? `Área` : `Площадь`}: ${cur.w * cur.h} u² (${isEs ? `constante` : `постоянна`})</div>
+              <div>${isEs ? `Perímetro` : `Периметр`}: 2 × (${cur.w} + ${cur.h}) = ${perim} u</div>
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `units`) {
+        const units = {
+          A: { area: 3, label: `A (rectángulo 3×1 = 3 u²)` },
+          B: { area: 3, label: `B (L de 3 cuadraditos = 3 u²)` },
+          C: { area: 0.5, label: `C (½ cuadradito = 0,5 u²)` },
+          D: { area: 1, label: `D (triángulo = 1 u²)` }
+        };
+        const chosen = units[p.unitPick] || units.A;
+        const figVal = 6 / chosen.area;
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 260 150" aria-hidden="true">
+              <rect x="20" y="25" width="70" height="100" class="geo-shape-peach" rx="2"/>
+              <text x="28" y="80" class="geo-label">Fig 1 (6 u²)</text>
+              <rect x="115" y="45" width="120" height="50" class="geo-shape-peach" rx="2"/>
+              <text x="142" y="75" class="geo-label">Fig 2 (6 u²)</text>
+              <text x="20" y="142" class="geo-label">P₁ = 10 u  |  P₂ = 11 u</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              ${[`A`, `B`, `C`, `D`].map((u) => `
+                <button type="button" class="choice-btn" style="padding:0.4rem 0.9rem; min-height:38px;" aria-pressed="${p.unitPick === u}" onclick="updateSimParam('unitPick', '${u}', false)">${isEs ? `Unidad` : `Мерка`} ${u}</button>
+              `).join(``)}
+            </div>
+            <div class="sim-readout">
+              <div>${chosen.label}</div>
+              <div>${isEs ? `Figura 1 y 2 miden` : `Фигура 1 и 2 равны`}: <strong>${figVal} ${p.unitPick}</strong></div>
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `units_si`) {
+        const list = [`km²`, `hm² (ha)`, `dam²`, `m²`, `dm²`, `cm²`, `mm²`];
+        const idx = Math.max(0, Math.min(6, p.siStep));
+        const power = (3 - idx) * 2;
+        const rel = power >= 0 ? `10^${power} m²` : `1 / 10^${Math.abs(power)} m²`;
+        const valInM2 = Math.pow(10, power);
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 280 150" aria-hidden="true">
+              <rect x="25" y="20" width="230" height="110" rx="8" class="geo-shape-purple"/>
+              <text x="140" y="65" text-anchor="middle" class="geo-label" style="font-size:18px;">1 ${list[idx]}</text>
+              <text x="140" y="95" text-anchor="middle" class="geo-label">= ${valInM2.toLocaleString(`es-AR`)} m²</text>
+              <text x="140" y="118" text-anchor="middle" class="geo-label">(${rel})</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div class="slider-block">
+              <div class="slider-label-row">
+                <label for="sim-si">${isEs ? `Escalón SI (×100 / ÷100)` : `Единица СИ (×100 / ÷100)`}</label>
+                <span>${list[idx]}</span>
+              </div>
+              <input id="sim-si" type="range" min="0" max="6" step="1" value="${idx}" oninput="updateSimParam('siStep', this.value)">
+            </div>
+            <div class="sim-readout">
+              <div>${isEs ? `Cada salto hacia la derecha multiplica por 100.` : `Каждый шаг вправо умножает на 100.`}</div>
+              <div>1 m² = 100 dm² = 10.000 cm²</div>
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `scaling`) {
+        const tiles = {
+          red: { w: 15, h: 15, es: `Roja 15×15`, ru: `Красная 15×15` },
+          green: { w: 20, h: 20, es: `Verde 20×20`, ru: `Зелёная 20×20` },
+          gray: { w: 15, h: 30, es: `Gris 15×30`, ru: `Серая 15×30` },
+          yellow: { w: 15, h: 25, es: `Amarilla 15×25`, ru: `Жёлтая 15×25` }
+        };
+        const tObj = tiles[p.tilePick] || tiles.green;
+        const areaPatio = 400 * 300;
+        const areaTile = tObj.w * tObj.h;
+        const exactCount = areaPatio / areaTile;
+        const exactFits = (400 % tObj.w === 0 && 300 % tObj.h === 0) || (400 % tObj.h === 0 && 300 % tObj.w === 0);
+        const k = p.scaleK || 2;
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 280 155" aria-hidden="true">
+              <rect x="20" y="15" width="160" height="120" class="geo-shape"/>
+              <text x="100" y="72" text-anchor="middle" class="geo-label">Patio 4m × 3m</text>
+              <text x="100" y="90" text-anchor="middle" class="geo-label">120.000 cm²</text>
+              <rect x="205" y="40" width="${tObj.w * 2}" height="${tObj.h * 2}" class="geo-shape-peach"/>
+              <text x="205" y="125" class="geo-label">${tObj.w}×${tObj.h} cm</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div style="display:flex; flex-wrap:wrap; gap:5px;">
+              ${Object.keys(tiles).map((tk) => `
+                <button type="button" class="choice-btn" style="padding:0.35rem 0.65rem; min-height:36px; font-size:0.8rem;" aria-pressed="${p.tilePick === tk}" onclick="updateSimParam('tilePick', '${tk}', false)">${isEs ? tiles[tk].es : tiles[tk].ru}</button>
+              `).join(``)}
+            </div>
+            <div class="sim-readout">
+              <div>${isEs ? `Área baldosa` : `Площадь плитки`}: ${areaTile} cm² → ${exactCount.toFixed(1)} ${isEs ? `baldosas` : `шт.`}</div>
+              <div>${isEs ? `¿Cubre exacto sin cortar?` : `Ложится ровно?`}: <strong>${exactFits ? (isEs ? `SÍ (exacto)` : `ДА (ровно)`) : (isEs ? `NO (requiere cortes)` : `НЕТ (нужна резка)`)}</strong></div>
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row">
+                <label for="sim-k">${isEs ? `Factor de escala (p. 203)` : `Масштаб сторон (стр. 203)`}</label>
+                <span>×${k} → P ×${k}, Área ×${k * k}</span>
+              </div>
+              <input id="sim-k" type="range" min="1" max="4" step="1" value="${k}" oninput="updateSimParam('scaleK', this.value)">
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `parallelogram`) {
+        const b = p.b;
+        const h = p.h;
+        const pct = (p.shearPct || 0) / 100;
+        const skew = 32;
+        const shiftX = pct * (b * 24);
+        const x0 = 40;
+        const y0 = 28;
+        const wPx = b * 24;
+        const hPx = h * 22;
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 280 155" aria-hidden="true">
+              <polygon points="${x0 + skew},${y0} ${x0 + wPx + skew},${y0} ${x0 + wPx},${y0 + hPx} ${x0 + skew},${y0 + hPx}" class="geo-shape"/>
+              <polygon points="${x0 + skew + shiftX},${y0} ${x0 + skew + shiftX},${y0 + hPx} ${x0 + shiftX},${y0 + hPx}" class="geo-shape-peach"/>
+              <line x1="${x0 + skew}" y1="${y0}" x2="${x0 + skew}" y2="${y0 + hPx}" class="geo-dashed"/>
+              <text x="28" y="145" class="geo-label">b = ${b} cm, h = ${h} cm → A = ${b * h} cm²</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-shear">${isEs ? `Estrategia de Juan (deslizar triángulo)` : `Метод Хуана (сдвиг треугольника)`}</label><span>${Math.round(pct * 100)}%</span></div>
+              <input id="sim-shear" type="range" min="0" max="100" step="5" value="${p.shearPct || 0}" oninput="updateSimParam('shearPct', this.value)">
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-pb">Base (b)</label><span>${b} cm</span></div>
+              <input id="sim-pb" type="range" min="3" max="7" step="1" value="${b}" oninput="updateSimParam('b', this.value)">
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-ph">Altura (h)</label><span>${h} cm</span></div>
+              <input id="sim-ph" type="range" min="2" max="5" step="1" value="${h}" oninput="updateSimParam('h', this.value)">
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `trapezoid`) {
+        const B = p.b;
+        const b = Math.min(B, p.b2);
+        const h = p.h;
+        const area = (((B + b) * h) / 2).toFixed(1);
+        const off = ((B - b) * 10);
+        const mode = p.trapMode || `josefina`;
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 240 160" aria-hidden="true">
+              <polygon points="${30 + off},25 ${30 + off + b * 20},25 ${30 + B * 20},${25 + h * 18} 30,${25 + h * 18}" class="geo-shape"/>
+              ${mode === `josefina`
+                ? `<line x1="30" y1="${25 + h * 18}" x2="${30 + off + b * 20}" y2="25" class="geo-dashed"/>`
+                : `<line x1="${30 + off}" y1="25" x2="${30 + off}" y2="${25 + h * 18}" class="geo-dashed"/>
+                   <line x1="${30 + off + b * 20}" y1="25" x2="${30 + off + b * 20}" y2="${25 + h * 18}" class="geo-dashed"/>`
+              }
+              <text x="30" y="150" class="geo-label">B=${B}, b=${b}, h=${h} → A=${area} cm²</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="choice-btn" style="flex:1; padding:0.4rem;" aria-pressed="${mode === `josefina`}" onclick="updateSimParam('trapMode', 'josefina', false)">Josefina (2 △)</button>
+              <button type="button" class="choice-btn" style="flex:1; padding:0.4rem;" aria-pressed="${mode === `pedro`}" onclick="updateSimParam('trapMode', 'pedro', false)">Pedro (▭ + 2 △)</button>
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-B">B (${isEs ? `Base mayor` : `Большее осн.`})</label><span>${B} cm</span></div>
+              <input id="sim-B" type="range" min="4" max="9" step="1" value="${B}" oninput="updateSimParam('b', this.value)">
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-b2">b (${isEs ? `Base menor` : `Меньшее осн.`})</label><span>${b} cm</span></div>
+              <input id="sim-b2" type="range" min="2" max="7" step="1" value="${b}" oninput="updateSimParam('b2', this.value)">
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-th">h (${isEs ? `Altura` : `Высота`})</label><span>${h} cm</span></div>
+              <input id="sim-th" type="range" min="2" max="6" step="1" value="${h}" oninput="updateSimParam('h', this.value)">
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `rhomboid`) {
+        const D = p.b;
+        const d = p.h;
+        const rectArea = D * d;
+        const area = rectArea / 2;
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 240 165" aria-hidden="true">
+              <rect x="30" y="20" width="${D * 22}" height="${d * 20}" class="geo-shape-purple"/>
+              <polygon points="${30 + D * 11},20 ${30 + D * 22},${20 + d * 10} ${30 + D * 11},${20 + d * 20} 30,${20 + d * 10}" class="geo-shape"/>
+              <line x1="${30 + D * 11}" y1="20" x2="${30 + D * 11}" y2="${20 + d * 20}" class="geo-dashed"/>
+              <line x1="30" y1="${20 + d * 10}" x2="${30 + D * 22}" y2="${20 + d * 10}" class="geo-dashed"/>
+              <text x="26" y="155" class="geo-label">Rect=${rectArea} → Romboide=${area} cm²</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-D">D (${isEs ? `Diagonal mayor` : `Диагональ D`})</label><span>${D} cm</span></div>
+              <input id="sim-D" type="range" min="3" max="8" step="1" value="${D}" oninput="updateSimParam('b', this.value)">
+            </div>
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-d">d (${isEs ? `Diagonal menor` : `Диагональ d`})</label><span>${d} cm</span></div>
+              <input id="sim-d" type="range" min="2" max="6" step="1" value="${d}" oninput="updateSimParam('h', this.value)">
+            </div>
+            <div class="sim-readout">
+              <div>A = (${D} × ${d}) / 2 = ${area} cm²</div>
+              <div>${isEs ? `Siempre es la mitad del rectángulo exterior.` : `Всегда равен половине внешнего прямоугольника.`}</div>
+            </div>
+          </div>
+        `;
+      } else if (tp.simType === `circle`) {
+        const r = Math.max(5, Math.min(25, p.r));
+        const d = r * 2;
+        const c = (2 * 3.14 * r).toFixed(2);
+        const a = (3.14 * r * r).toFixed(2);
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 240 180" aria-hidden="true">
+              <circle cx="120" cy="82" r="${r * 2.4}" class="geo-shape"/>
+              <line x1="120" y1="82" x2="${120 + r * 2.4}" y2="82" class="geo-dashed"/>
+              <text x="124" y="76" class="geo-label">r = ${r} cm</text>
+              <line x1="25" y1="162" x2="${25 + Math.min(200, (r / 25) * 200)}" y2="162" stroke="#633994" stroke-width="4"/>
+              <text x="25" y="154" class="geo-label">Piolín C = ${c} cm (≈ 3,14 × d)</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-r">${isEs ? `Radio (r)` : `Радиус (r)`}</label><span>${r} cm</span></div>
+              <input id="sim-r" type="range" min="5" max="25" step="1" value="${r}" oninput="updateSimParam('r', this.value)">
+            </div>
+            <div class="sim-readout">
+              <div>d = ${d} cm | C / d = π ≈ 3,14</div>
+              <div>C = 2·π·r = ${c} cm</div>
+              <div>A = π·r² = ${a} cm²</div>
+            </div>
+          </div>
+        `;
+      } else {
+        const l = Math.max(2, Math.min(8, p.b));
+        const aPar = (0.5 * l * l).toFixed(1);
+        const aTrap = (((l + l / 3) * l) / 2).toFixed(1);
+        const aRomb = (0.5 * l * l).toFixed(1);
+        box.innerHTML = `
+          <div class="svg-stage">
+            <svg viewBox="0 0 280 140" aria-hidden="true">
+              <rect x="18" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
+              <polygon points="53,20 88,20 53,90 18,90" class="geo-shape"/>
+              <rect x="105" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
+              <polygon points="128,20 152,20 175,90 105,90" class="geo-shape-purple"/>
+              <rect x="192" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
+              <polygon points="227,20 262,55 227,90 192,55" class="geo-shape"/>
+              <text x="20" y="118" class="geo-label">½ l²=${aPar} | ⅔ l²=${aTrap} | ½ l²=${aRomb}</text>
+            </svg>
+          </div>
+          <div class="sim-controls">
+            <div class="slider-block">
+              <div class="slider-label-row"><label for="sim-l">${isEs ? `Lado del cuadrado (l)` : `Сторона квадрата (l)`}</label><span>${l} cm</span></div>
+              <input id="sim-l" type="range" min="2" max="8" step="1" value="${l}" oninput="updateSimParam('b', this.value)">
+            </div>
+            <div class="sim-readout">
+              <div>${isEs ? `Área del cuadrado` : `Площадь квадрата`}: ${l * l} cm²</div>
+              <div>${isEs ? `Mayor área` : `Наибольшая площадь`}: <strong>${isEs ? `Trapecio` : `Трапеция`} (${aTrap} cm²)</strong></div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    /* ============================================================
+       2) MIND MAP, FLASHCARDS & QUICK CHALLENGE
+       ============================================================ */
+    function generateChallenge() {
+      const b = Math.floor(Math.random() * 7) + 4;
+      const h = Math.floor(Math.random() * 5) + 3;
+      const kind = Math.floor(Math.random() * 3);
+      if (kind === 0) {
+        currentChallenge = {
+          qEs: `Calculá el área de un paralelogramo de base ${b} cm y altura ${h} cm:`,
+          qRu: `Вычисли площадь параллелограмма с основанием ${b} см и высотой ${h} см:`,
+          ans: b * h,
+          opts: [b * h, 2 * (b + h), (b * h) / 2]
+        };
+      } else if (kind === 1) {
+        currentChallenge = {
+          qEs: `Calculá el área de un romboide de diagonales D = ${b * 2} cm y d = ${h} cm:`,
+          qRu: `Вычисли площадь ромбоида с диагоналями D = ${b * 2} см и d = ${h} см:`,
+          ans: b * h,
+          opts: [b * h, b * 2 * h, b + h]
+        };
+      } else {
+        currentChallenge = {
+          qEs: `Calculá el área de un trapecio con B = ${b + 2} cm, b = ${b - 2} cm y h = ${h} cm:`,
+          qRu: `Вычисли площадь трапеции с B = ${b + 2} см, b = ${b - 2} см и h = ${h} см:`,
+          ans: b * h,
+          opts: [b * h, 2 * b * h, b + h]
+        };
+      }
+      currentChallenge.opts.sort((a, z) => a - z);
+    }
+
+    function renderResourcesView(host) {
+      const isEs = appState.lang === `es`;
+      if (!currentChallenge) generateChallenge();
+
+      host.innerHTML = `
+        <div class="topic-header">
+          <div>
+            <div class="topic-kicker">${isEs ? `RECURSOS COMPLEMENTARIOS` : `ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ`}</div>
+            <h2 class="topic-title">${isEs ? `Mapa Mental, Fichas Bilingües y Desafío` : `Интеллект-карта, Карточки и Игра`}</h2>
+          </div>
+        </div>
+
+        <section class="lab-card">
+          <h3 class="lab-title">${isEs ? `Mapa Mental del Capítulo 8` : `Интеллект-карта Главы 8`}</h3>
+          <div class="svg-stage" style="min-height: 220px;">
+            <svg viewBox="0 0 600 220" aria-hidden="true">
+              <rect x="215" y="15" width="170" height="44" rx="10" class="geo-shape-purple"/>
+              <text x="300" y="42" text-anchor="middle" class="geo-label">Perímetro y Área</text>
+              <line x1="300" y1="59" x2="100" y2="105" class="geo-dashed"/>
+              <line x1="300" y1="59" x2="300" y2="105" class="geo-dashed"/>
+              <line x1="300" y1="59" x2="500" y2="105" class="geo-dashed"/>
+              <rect x="20" y="105" width="160" height="80" rx="10" class="geo-shape-peach"/>
+              <text x="32" y="135" class="geo-label">Unidades: m², cm²</text>
+              <text x="32" y="158" class="geo-label">1 ha = 10.000 m²</text>
+              <rect x="210" y="105" width="180" height="80" rx="10" class="geo-shape"/>
+              <text x="222" y="135" class="geo-label">Polígonos: b×h</text>
+              <text x="222" y="158" class="geo-label">((B+b)×h)/2 · (D×d)/2</text>
+              <rect x="415" y="105" width="165" height="80" rx="10" class="geo-shape-purple"/>
+              <text x="428" y="135" class="geo-label">Círculo (π ≈ 3,14)</text>
+              <text x="428" y="158" class="geo-label">C = 2πr · A = πr²</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="lab-card" id="challenge-card"></section>
+
+        <section class="lab-card">
+          <h3 class="lab-title">${isEs ? `Fichas de Estudio y Glosario ES–RU (hacé clic para ver definición)` : `Учебные карточки и словарь ES–RU (нажми для просмотра)`}</h3>
+          <div class="cards-grid">
+            ${GLOSSARY.map((g, i) => `
+              <div class="flashcard" onclick="flipFlashcard(${i})" role="button" tabindex="0">
+                <div style="font-weight:700; color:var(--primary);">${g.es} / ${g.ru}</div>
+                <div class="formula-pill">${g.formula}</div>
+                <div id="fc-body-${i}" class="hidden" style="font-size:0.875rem; color:var(--on-surface-variant); margin-top:4px;">
+                  <div><strong>ES:</strong> ${g.defEs}</div>
+                  <div><strong>RU:</strong> ${g.defRu}</div>
+                </div>
+              </div>
+            `).join(``)}
+          </div>
+        </section>
+      `;
+      renderChallengeCard();
+    }
+
+    function renderChallengeCard() {
+      const card = document.getElementById(`challenge-card`);
+      if (!card || !currentChallenge) return;
+      const isEs = appState.lang === `es`;
+      card.innerHTML = `
+        <div class="lab-head">
+          <h3 class="lab-title">${isEs ? `Desafío Rápido de Cálculo Geométrico` : `Быстрый геометрический челлендж`}</h3>
+          <span style="font-family:var(--font-mono); font-weight:700; color:var(--primary);">${isEs ? `Racha:` : `Счёт:`} ${appState.challengeScore}</span>
+        </div>
+        <p class="ex-prompt">${isEs ? currentChallenge.qEs : currentChallenge.qRu}</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          ${currentChallenge.opts.map((o) => `
+            <button type="button" class="btn-secondary" onclick="answerChallenge(${o})">${o} cm²</button>
+          `).join(``)}
+        </div>
+        <div class="feedback-msg" id="challenge-fb"></div>
+      `;
+    }
+
+    /* ============================================================
+       3) QUIZ /10
+       ============================================================ */
+    function renderQuizView(host) {
+      const t = UI[appState.lang];
+      const isEs = appState.lang === `es`;
+      const res = appState.quizResult;
+
+      let summaryHtml = ``;
+      if (res) {
+        summaryHtml = `
+          <div class="quiz-summary">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem;">
+              <div>
+                <div style="font-size:0.78rem; font-weight:700; color:var(--primary);">${isEs ? `RESULTADO FINAL` : `ИТОГОВЫЙ РЕЗУЛЬТАТ`}</div>
+                <div class="score-big">${res.score10} / 10</div>
+              </div>
+              <div>
+                <div><strong>${isEs ? `Correctas:` : `Верно:`}</strong> ${res.correct} (${res.pct}%)</div>
+                <div><strong>${isEs ? `Incorrectas:` : `Ошибки:`}</strong> ${res.incorrect}</div>
+              </div>
+              <button type="button" class="btn-primary" onclick="retryQuiz()">${t.retryQuizBtn}</button>
+            </div>
+            <div style="font-size:0.9rem;">
+              <strong>${isEs ? `Recomendación:` : `Рекомендация:`}</strong>
+              ${res.weakTopics.length === 0
+                ? (isEs ? `¡Excelente dominio de todo el Capítulo 8!` : `Отличное знание всей Главы 8!`)
+                : (isEs ? `Repasá los temas: ${res.weakTopics.join(`, `)}` : `Повтори темы: ${res.weakTopics.join(`, `)}`)}
+            </div>
+          </div>
+        `;
+      }
+
+      host.innerHTML = `
+        <div class="topic-header">
+          <div>
+            <div class="topic-kicker">${isEs ? `EVALUACIÓN CAPÍTULO 8` : `ОЦЕНКА ГЛАВЫ 8`}</div>
+            <h2 class="topic-title">${t.quizTitle}</h2>
+            <p class="topic-bilingual-sub">${t.quizIntro}</p>
+          </div>
+        </div>
+        ${summaryHtml}
+        <div class="exercise-list">
+          ${QUIZ_QUESTIONS.map((q, idx) => {
+            const picked = appState.quizAnswers[q.id];
+            const opts = isEs ? q.optsEs : q.optsRu;
+            const showExp = Boolean(res);
+            const isCorrect = picked === q.ans;
+            return `
+              <article class="exercise-card">
+                <div class="ex-meta"><span class="ex-ref">${isEs ? `Pregunta` : `Вопрос`} ${idx + 1}/10</span></div>
+                <p class="ex-prompt">${isEs ? q.qEs : q.qRu}</p>
+                <div class="choice-grid">
+                  ${opts.map((o, i) => `
+                    <button type="button" class="choice-btn" data-quiz-choice="${q.id}" aria-pressed="${picked === i ? `true` : `false`}" onclick="selectQuizOption('${q.id}', ${i})">${o}</button>
+                  `).join(``)}
+                </div>
+                ${showExp ? `<div class="feedback-msg ${isCorrect ? `ok` : `err`}">${isEs ? q.expEs : q.expRu}</div>` : ``}
+              </article>
+            `;
+          }).join(``)}
+        </div>
+        <div style="display:flex; justify-content:flex-end;">
+          <button type="button" class="btn-primary" onclick="submitQuiz()">${t.submitQuizBtn}</button>
+        </div>
+      `;
+    }
+
+    /* ============================================================
+       4) TEACHER PANEL
+       ============================================================ */
+    function renderTeacherView(host) {
+      const t = UI[appState.lang];
+      const isEs = appState.lang === `es`;
+      host.innerHTML = `
+        <div class="topic-header">
+          <div>
+            <div class="topic-kicker">${isEs ? `GESTIÓN PEDAGÓGICA` : `ПЕДАГОГИЧЕСКОЕ УПРАВЛЕНИЕ`}</div>
+            <h2 class="topic-title">${t.teacherTitle}</h2>
+            <p class="topic-bilingual-sub">${t.teacherIntro}</p>
+          </div>
+          <button type="button" class="btn-primary" onclick="exportProgressCsv()">
+            <i data-lucide="download" width="16" height="16"></i>
+            ${t.exportCsvBtn}
+          </button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>${isEs ? `Tema (PDF)` : `Тема (PDF)`}</th>
+              <th>${isEs ? `Pág.` : `Стр.`}</th>
+              <th>${isEs ? `Estado` : `Статус`}</th>
+              <th>${isEs ? `Clave de ejercicios` : `Эталонные ответы`}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${TOPICS.map((tp) => {
+              const done = tp.exercises.filter((e) => appState.solved[e.id]).length;
+              const keys = tp.exercises.map((e) => e.type === `number` ? `${e.answer} ${e.unit}` : (isEs ? e.optionsEs[e.answerIndex] : e.optionsRu[e.answerIndex])).join(` | `);
+              return `
+                <tr>
+                  <td><strong>${isEs ? tp.titleEs : tp.titleRu}</strong></td>
+                  <td>${tp.pages}</td>
+                  <td>${done}/${tp.exercises.length}</td>
+                  <td>${keys}</td>
+                </tr>
+              `;
+            }).join(``)}
+          </tbody>
+        </table>
+      `;
+    }
+
+    /* ============================================================
+       SIDEBAR: TUTOR & BADGES
+       ============================================================ */
+    function renderTutor() {
+      const el = document.getElementById(`tutor-text`);
+      if (!el) return;
+      const tp = getCurrentTopic();
+      const isEs = appState.lang === `es`;
+      if (appState.hintLevel === 0) {
+        el.innerHTML = `<strong>${isEs ? `Concepto clave:` : `Ключевое правило:`}</strong> ${isEs ? tp.rememberEs : tp.rememberRu}`;
+      } else {
+        const hints = isEs ? tp.hintsEs : tp.hintsRu;
+        const h = hints[Math.min(appState.hintLevel - 1, hints.length - 1)];
+        el.innerHTML = `<strong>${isEs ? `Pista` : `Подсказка`} ${appState.hintLevel}:</strong> ${h}`;
+      }
+    }
+
+    function renderBadges() {
+      const box = document.getElementById(`badges-container`);
+      if (!box) return;
+      const isEs = appState.lang === `es`;
+      const solvedCount = Object.keys(appState.solved).length;
+      const badges = [
+        { ok: solvedCount >= 1, es: `Primer paso`, ru: `Первый шаг` },
+        { ok: solvedCount >= 6, es: `Explorador 1/3`, ru: `Исследователь` },
+        { ok: appState.challengeScore >= 3, es: `Calculista ágil`, ru: `Быстрый счёт` },
+        { ok: Boolean(appState.quizResult && appState.quizResult.score10 >= 7), es: `Aprobado ≥ 7/10`, ru: `Зачёт ≥ 7/10` }
+      ];
+      box.innerHTML = badges.map((b) => `
+        <div class="badge-item ${b.ok ? `unlocked` : ``}">
+          ${b.ok ? `★ ` : ``}${isEs ? b.es : b.ru}
+        </div>
+      `).join(``);
+    }
+
+    document.addEventListener(`DOMContentLoaded`, initApp);
+  </script>
+</body>
+</html>
+
