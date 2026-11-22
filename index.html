@@ -1142,6 +1142,41 @@
     .geo-shape-peach { fill: #fde3d4; stroke: #e57a44; stroke-width: 2.5; }
     .geo-dashed { stroke: #633994; stroke-width: 2; stroke-dasharray: 5 4; fill: none; }
     .geo-label { fill: #182330; font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+    #simulator-container .svg-stage {
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    #simulator-container .svg-stage svg text.geo-label {
+      paint-order: stroke;
+      stroke: rgb(255 255 255 / 0.9);
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+    .geo-grid-overlay {
+      stroke: rgb(24 35 48 / 0.18);
+      stroke-width: 1;
+      fill: none;
+      pointer-events: none;
+    }
+    .sim-grid-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      background: var(--surface-muted);
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-sm);
+      padding: 0.3rem 0.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .sim-grid-toggle input {
+      accent-color: var(--primary);
+      cursor: pointer;
+      margin: 0;
+    }
 
     .hidden { display: none !important; }
 
@@ -1912,7 +1947,7 @@
       simParams: {
         b: 6, h: 4, b2: 4, r: 15, rectPreset: 0,
         unitPick: `A`, siStep: 3, tilePick: `green`, scaleK: 2,
-        shearPct: 0, trapMode: `josefina`, unwrapPct: 100
+        shearPct: 0, trapMode: `josefina`, unwrapPct: 100, showGrid: true
       },
       animStep: 0,
       hintLevel: 0,
@@ -1946,7 +1981,7 @@
             appState.simParams = Object.assign({
               b: 6, h: 4, b2: 4, r: 15, rectPreset: 0,
               unitPick: `A`, siStep: 3, tilePick: `green`, scaleK: 2,
-              shearPct: 0, trapMode: `josefina`, unwrapPct: 100
+              shearPct: 0, trapMode: `josefina`, unwrapPct: 100, showGrid: true
             }, parsed.simParams || {});
           }
         }
@@ -1957,6 +1992,9 @@
           const loaded = await window.notebookAppApi.getAppState();
           if (loaded && typeof loaded === `object`) {
             appState = Object.assign({}, appState, loaded);
+            if (!appState.simParams || typeof appState.simParams.showGrid !== `boolean`) {
+              appState.simParams = Object.assign({ showGrid: true }, appState.simParams || {});
+            }
           }
         }
       } catch (e) { /* safe initial empty state */ }
@@ -2774,6 +2812,41 @@
     /* ============================================================
        CUSTOM INTERACTIVE SIMULATORS FOR ALL 9 TOPICS
        ============================================================ */
+    function buildGridPath(w, h, ox, oy, dx, dy) {
+      let d = ``;
+      const startX = ((ox % dx) + dx) % dx;
+      for (let x = startX; x <= w; x += dx) {
+        d += `M${x} 0V${h}`;
+      }
+      const startY = ((oy % dy) + dy) % dy;
+      for (let y = startY; y <= h; y += dy) {
+        d += `M0 ${y}H${w}`;
+      }
+      return d;
+    }
+
+    function renderSimStage(w, h, shapesSvg, overlaySvg, gridCfg) {
+      const showGrid = appState.simParams.showGrid !== false;
+      const isEs = appState.lang === `es`;
+      const gridPath = showGrid
+        ? `<path d="${buildGridPath(w, h, gridCfg.ox, gridCfg.oy, gridCfg.dx, gridCfg.dy)}" class="geo-grid-overlay"/>`
+        : ``;
+      const toggleLabel = isEs ? `Mostrar cuadraditos` : `Показать клеточки`;
+      return `
+        <div class="svg-stage">
+          <svg viewBox="0 0 ${w} ${h}" aria-hidden="true">
+            ${shapesSvg}
+            ${gridPath}
+            ${overlaySvg}
+          </svg>
+          <label class="sim-grid-toggle">
+            <input type="checkbox" ${showGrid ? `checked` : ``} onchange="updateSimParam('showGrid', this.checked, false)">
+            <span>${toggleLabel}</span>
+          </label>
+        </div>
+      `;
+    }
+
     function renderSimulator() {
       const box = document.getElementById(`simulator-container`);
       if (!box) return;
@@ -2786,12 +2859,12 @@
         const cur = presets[p.rectPreset] || presets[0];
         const perim = 2 * (cur.w + cur.h);
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 280 120" aria-hidden="true">
-              <rect x="20" y="18" width="${cur.w * 11}" height="${cur.h * 11}" class="geo-shape" rx="4"/>
-              <text x="20" y="108" class="geo-label">${cur.w} × ${cur.h} = 60 u²  |  P = ${perim} u</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            280, 120,
+            `<rect x="20" y="18" width="${cur.w * 11}" height="${cur.h * 11}" class="geo-shape" rx="4"/>`,
+            `<text x="20" y="108" class="geo-label">${cur.w} × ${cur.h} = 60 u²  |  P = ${perim} u</text>`,
+            { ox: 20, oy: 18, dx: 11, dy: 11 }
+          )}
           <div class="sim-controls">
             <div class="slider-block">
               <div class="slider-label-row">
@@ -2816,15 +2889,15 @@
         const chosen = units[p.unitPick] || units.A;
         const figVal = 6 / chosen.area;
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 260 150" aria-hidden="true">
-              <rect x="20" y="25" width="70" height="100" class="geo-shape-peach" rx="2"/>
-              <text x="28" y="80" class="geo-label">Fig 1 (6 u²)</text>
-              <rect x="115" y="45" width="120" height="50" class="geo-shape-peach" rx="2"/>
-              <text x="142" y="75" class="geo-label">Fig 2 (6 u²)</text>
-              <text x="20" y="142" class="geo-label">P₁ = 10 u  |  P₂ = 11 u</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            260, 150,
+            `<rect x="20" y="25" width="70" height="100" class="geo-shape-peach" rx="2"/>
+             <rect x="115" y="45" width="120" height="50" class="geo-shape-peach" rx="2"/>`,
+            `<text x="28" y="80" class="geo-label">Fig 1 (6 u²)</text>
+             <text x="142" y="75" class="geo-label">Fig 2 (6 u²)</text>
+             <text x="20" y="142" class="geo-label">P₁ = 10 u  |  P₂ = 11 u</text>`,
+            { ox: 20, oy: 25, dx: 10, dy: 10 }
+          )}
           <div class="sim-controls">
             <div style="display:flex; flex-wrap:wrap; gap:6px;">
               ${[`A`, `B`, `C`, `D`].map((u) => `
@@ -2844,14 +2917,14 @@
         const rel = power >= 0 ? `10^${power} m²` : `1 / 10^${Math.abs(power)} m²`;
         const valInM2 = Math.pow(10, power);
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 280 150" aria-hidden="true">
-              <rect x="25" y="20" width="230" height="110" rx="8" class="geo-shape-purple"/>
-              <text x="140" y="65" text-anchor="middle" class="geo-label" style="font-size:18px;">1 ${list[idx]}</text>
-              <text x="140" y="95" text-anchor="middle" class="geo-label">= ${valInM2.toLocaleString(`es-AR`)} m²</text>
-              <text x="140" y="118" text-anchor="middle" class="geo-label">(${rel})</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            280, 150,
+            `<rect x="25" y="20" width="230" height="110" rx="8" class="geo-shape-purple"/>`,
+            `<text x="140" y="65" text-anchor="middle" class="geo-label" style="font-size:18px;">1 ${list[idx]}</text>
+             <text x="140" y="95" text-anchor="middle" class="geo-label">= ${valInM2.toLocaleString(`es-AR`)} m²</text>
+             <text x="140" y="118" text-anchor="middle" class="geo-label">(${rel})</text>`,
+            { ox: 25, oy: 20, dx: 10, dy: 10 }
+          )}
           <div class="sim-controls">
             <div class="slider-block">
               <div class="slider-label-row">
@@ -2880,15 +2953,15 @@
         const exactFits = (400 % tObj.w === 0 && 300 % tObj.h === 0) || (400 % tObj.h === 0 && 300 % tObj.w === 0);
         const k = p.scaleK || 2;
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 280 155" aria-hidden="true">
-              <rect x="20" y="15" width="160" height="120" class="geo-shape"/>
-              <text x="100" y="72" text-anchor="middle" class="geo-label">Patio 4m × 3m</text>
-              <text x="100" y="90" text-anchor="middle" class="geo-label">120.000 cm²</text>
-              <rect x="205" y="40" width="${tObj.w * 2}" height="${tObj.h * 2}" class="geo-shape-peach"/>
-              <text x="205" y="125" class="geo-label">${tObj.w}×${tObj.h} cm</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            280, 155,
+            `<rect x="20" y="15" width="160" height="120" class="geo-shape"/>
+             <rect x="205" y="40" width="${tObj.w * 2}" height="${tObj.h * 2}" class="geo-shape-peach"/>`,
+            `<text x="100" y="72" text-anchor="middle" class="geo-label">Patio 4m × 3m</text>
+             <text x="100" y="90" text-anchor="middle" class="geo-label">120.000 cm²</text>
+             <text x="205" y="125" class="geo-label">${tObj.w}×${tObj.h} cm</text>`,
+            { ox: 20, oy: 15, dx: 10, dy: 10 }
+          )}
           <div class="sim-controls">
             <div style="display:flex; flex-wrap:wrap; gap:5px;">
               ${Object.keys(tiles).map((tk) => `
@@ -2919,14 +2992,14 @@
         const wPx = b * 24;
         const hPx = h * 22;
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 280 155" aria-hidden="true">
-              <polygon points="${x0 + skew},${y0} ${x0 + wPx + skew},${y0} ${x0 + wPx},${y0 + hPx} ${x0 + skew},${y0 + hPx}" class="geo-shape"/>
-              <polygon points="${x0 + skew + shiftX},${y0} ${x0 + skew + shiftX},${y0 + hPx} ${x0 + shiftX},${y0 + hPx}" class="geo-shape-peach"/>
-              <line x1="${x0 + skew}" y1="${y0}" x2="${x0 + skew}" y2="${y0 + hPx}" class="geo-dashed"/>
-              <text x="28" y="145" class="geo-label">b = ${b} cm, h = ${h} cm → A = ${b * h} cm²</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            280, 155,
+            `<polygon points="${x0 + skew},${y0} ${x0 + wPx + skew},${y0} ${x0 + wPx},${y0 + hPx} ${x0 + skew},${y0 + hPx}" class="geo-shape"/>
+             <polygon points="${x0 + skew + shiftX},${y0} ${x0 + skew + shiftX},${y0 + hPx} ${x0 + shiftX},${y0 + hPx}" class="geo-shape-peach"/>`,
+            `<line x1="${x0 + skew}" y1="${y0}" x2="${x0 + skew}" y2="${y0 + hPx}" class="geo-dashed"/>
+             <text x="28" y="145" class="geo-label">b = ${b} cm, h = ${h} cm → A = ${b * h} cm²</text>`,
+            { ox: 0, oy: 28, dx: 24, dy: 22 }
+          )}
           <div class="sim-controls">
             <div class="slider-block">
               <div class="slider-label-row"><label for="sim-shear">${isEs ? `Estrategia de Juan (deslizar triángulo)` : `Метод Хуана (сдвиг треугольника)`}</label><span>${Math.round(pct * 100)}%</span></div>
@@ -2950,17 +3023,17 @@
         const off = ((B - b) * 10);
         const mode = p.trapMode || `josefina`;
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 240 160" aria-hidden="true">
-              <polygon points="${30 + off},25 ${30 + off + b * 20},25 ${30 + B * 20},${25 + h * 18} 30,${25 + h * 18}" class="geo-shape"/>
-              ${mode === `josefina`
-                ? `<line x1="30" y1="${25 + h * 18}" x2="${30 + off + b * 20}" y2="25" class="geo-dashed"/>`
-                : `<line x1="${30 + off}" y1="25" x2="${30 + off}" y2="${25 + h * 18}" class="geo-dashed"/>
-                   <line x1="${30 + off + b * 20}" y1="25" x2="${30 + off + b * 20}" y2="${25 + h * 18}" class="geo-dashed"/>`
-              }
-              <text x="30" y="150" class="geo-label">B=${B}, b=${b}, h=${h} → A=${area} cm²</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            240, 160,
+            `<polygon points="${30 + off},25 ${30 + off + b * 20},25 ${30 + B * 20},${25 + h * 18} 30,${25 + h * 18}" class="geo-shape"/>`,
+            `${mode === `josefina`
+              ? `<line x1="30" y1="${25 + h * 18}" x2="${30 + off + b * 20}" y2="25" class="geo-dashed"/>`
+              : `<line x1="${30 + off}" y1="25" x2="${30 + off}" y2="${25 + h * 18}" class="geo-dashed"/>
+                 <line x1="${30 + off + b * 20}" y1="25" x2="${30 + off + b * 20}" y2="${25 + h * 18}" class="geo-dashed"/>`
+            }
+             <text x="30" y="150" class="geo-label">B=${B}, b=${b}, h=${h} → A=${area} cm²</text>`,
+            { ox: 30, oy: 25, dx: 20, dy: 18 }
+          )}
           <div class="sim-controls">
             <div style="display:flex; gap:6px;">
               <button type="button" class="choice-btn" style="flex:1; padding:0.4rem;" aria-pressed="${mode === `josefina`}" onclick="updateSimParam('trapMode', 'josefina', false)">Josefina (2 △)</button>
@@ -2986,15 +3059,15 @@
         const rectArea = D * d;
         const area = rectArea / 2;
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 240 165" aria-hidden="true">
-              <rect x="30" y="20" width="${D * 22}" height="${d * 20}" class="geo-shape-purple"/>
-              <polygon points="${30 + D * 11},20 ${30 + D * 22},${20 + d * 10} ${30 + D * 11},${20 + d * 20} 30,${20 + d * 10}" class="geo-shape"/>
-              <line x1="${30 + D * 11}" y1="20" x2="${30 + D * 11}" y2="${20 + d * 20}" class="geo-dashed"/>
-              <line x1="30" y1="${20 + d * 10}" x2="${30 + D * 22}" y2="${20 + d * 10}" class="geo-dashed"/>
-              <text x="26" y="155" class="geo-label">Rect=${rectArea} → Romboide=${area} cm²</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            240, 165,
+            `<rect x="30" y="20" width="${D * 22}" height="${d * 20}" class="geo-shape-purple"/>
+             <polygon points="${30 + D * 11},20 ${30 + D * 22},${20 + d * 10} ${30 + D * 11},${20 + d * 20} 30,${20 + d * 10}" class="geo-shape"/>`,
+            `<line x1="${30 + D * 11}" y1="20" x2="${30 + D * 11}" y2="${20 + d * 20}" class="geo-dashed"/>
+             <line x1="30" y1="${20 + d * 10}" x2="${30 + D * 22}" y2="${20 + d * 10}" class="geo-dashed"/>
+             <text x="26" y="155" class="geo-label">Rect=${rectArea} → Romboide=${area} cm²</text>`,
+            { ox: 30, oy: 20, dx: 22, dy: 20 }
+          )}
           <div class="sim-controls">
             <div class="slider-block">
               <div class="slider-label-row"><label for="sim-D">D (${isEs ? `Diagonal mayor` : `Диагональ D`})</label><span>${D} cm</span></div>
@@ -3016,15 +3089,15 @@
         const c = (2 * 3.14 * r).toFixed(2);
         const a = (3.14 * r * r).toFixed(2);
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 240 180" aria-hidden="true">
-              <circle cx="120" cy="82" r="${r * 2.4}" class="geo-shape"/>
-              <line x1="120" y1="82" x2="${120 + r * 2.4}" y2="82" class="geo-dashed"/>
-              <text x="124" y="76" class="geo-label">r = ${r} cm</text>
-              <line x1="25" y1="162" x2="${25 + Math.min(200, (r / 25) * 200)}" y2="162" stroke="#633994" stroke-width="4"/>
-              <text x="25" y="154" class="geo-label">Piolín C = ${c} cm (≈ 3,14 × d)</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            240, 180,
+            `<circle cx="120" cy="82" r="${r * 2.4}" class="geo-shape"/>`,
+            `<line x1="120" y1="82" x2="${120 + r * 2.4}" y2="82" class="geo-dashed"/>
+             <text x="124" y="76" class="geo-label">r = ${r} cm</text>
+             <line x1="25" y1="162" x2="${25 + Math.min(200, (r / 25) * 200)}" y2="162" stroke="#633994" stroke-width="4"/>
+             <text x="25" y="154" class="geo-label">Piolín C = ${c} cm (≈ 3,14 × d)</text>`,
+            { ox: 120, oy: 82, dx: 12, dy: 12 }
+          )}
           <div class="sim-controls">
             <div class="slider-block">
               <div class="slider-label-row"><label for="sim-r">${isEs ? `Radio (r)` : `Радиус (r)`}</label><span>${r} cm</span></div>
@@ -3043,17 +3116,17 @@
         const aTrap = (((l + l / 3) * l) / 2).toFixed(1);
         const aRomb = (0.5 * l * l).toFixed(1);
         box.innerHTML = `
-          <div class="svg-stage">
-            <svg viewBox="0 0 280 140" aria-hidden="true">
-              <rect x="18" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
-              <polygon points="53,20 88,20 53,90 18,90" class="geo-shape"/>
-              <rect x="105" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
-              <polygon points="128,20 152,20 175,90 105,90" class="geo-shape-purple"/>
-              <rect x="192" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
-              <polygon points="227,20 262,55 227,90 192,55" class="geo-shape"/>
-              <text x="20" y="118" class="geo-label">½ l²=${aPar} | ⅔ l²=${aTrap} | ½ l²=${aRomb}</text>
-            </svg>
-          </div>
+          ${renderSimStage(
+            280, 140,
+            `<rect x="18" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
+             <polygon points="53,20 88,20 53,90 18,90" class="geo-shape"/>
+             <rect x="105" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
+             <polygon points="128,20 152,20 175,90 105,90" class="geo-shape-purple"/>
+             <rect x="192" y="20" width="70" height="70" fill="none" stroke="#99a3b7" stroke-width="1.5"/>
+             <polygon points="227,20 262,55 227,90 192,55" class="geo-shape"/>`,
+            `<text x="20" y="118" class="geo-label">½ l²=${aPar} | ⅔ l²=${aTrap} | ½ l²=${aRomb}</text>`,
+            { ox: 18, oy: 20, dx: 10, dy: 10 }
+          )}
           <div class="sim-controls">
             <div class="slider-block">
               <div class="slider-label-row"><label for="sim-l">${isEs ? `Lado del cuadrado (l)` : `Сторона квадрата (l)`}</label><span>${l} cm</span></div>
